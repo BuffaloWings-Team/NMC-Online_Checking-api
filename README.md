@@ -1,2 +1,2 @@
-# SS23_Project
+# NMC_Online_Checking-api
 Project for Security Service
