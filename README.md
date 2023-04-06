@@ -1,4 +1,4 @@
-# NMC_Online_Checking-api
+# NMC_OnlineCheckIn-api
 Project for Security Service
 Currently, large-scale community meetings in Taiwan are mostly fixed-point. However, finding a suitable venue for a three-hour meeting with hundreds of people is inconvenient, time-consuming, and expensive. To address this issue, we propose an online voting platform that enables neighborhood communities to hold their meetings online. This system will have two main features: online check-in and live-streaming.
 
