@@ -23,10 +23,10 @@ module Online_Checking
             JSON(
                 {
                     type: 'document',
-                    id:,
-                    filename:,
-                    description:,
-                    content:
+                    id: @id,
+                    filename: @filename,
+                    description: @description,
+                    content: @content
                 },
                 options
             )
@@ -34,7 +34,7 @@ module Online_Checking
 
         # File store must be setup once when application runs
         def self.setup
-            Dir.mkdir(Online_Checking::STORE_DIR) unless Dir.exist? Online_Checking:STORE_DIR
+            Dir.mkdir(Online_Checking::STORE_DIR) unless Dir.exist? Online_Checking::STORE_DIR
         end
 
         # Stores document in file store
