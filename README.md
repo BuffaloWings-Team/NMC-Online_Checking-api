@@ -7,10 +7,10 @@ The online check-in feature will allow members to sign in and participate in mee
 
 ## Routes
 All routes return JSON
-*GET `/`:Root route shows if Web API is running
-*GET `api/v1/document/`: returns all confiugration IDs
-*GET `api/v1/document/[ID]`: returns details about a single document with given ID
-*POST `api/v1/document/`: creates a new document
+* GET `/`:Root route shows if Web API is running
+* GET `api/v1/document/`: returns all confiugration IDs
+* GET `api/v1/document/[ID]`: returns details about a single document with given ID
+* POST `api/v1/document/`: creates a new document
 
 ## Install
 Install this API by cloning the relevant branch and use bundler to install specified gems from `Gemfile.lock`:
