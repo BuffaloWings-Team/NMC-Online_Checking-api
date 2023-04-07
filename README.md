@@ -19,7 +19,7 @@ Install this API by cloning the relevant branch and use bundler to install speci
 bundle install
 ```
 
-# Test
+## Test
 
 Run the test script:
 
