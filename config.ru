@@ -1,4 +1,6 @@
 # frozen_string_literal: true
 
-requre './app/controllers/app'
-run Online_Checking::Api.freeze.app
+require './require_app'
+require_app
+
+run Credence::Api.freeze.app
