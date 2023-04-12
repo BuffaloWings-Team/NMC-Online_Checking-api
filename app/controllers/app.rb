@@ -3,8 +3,8 @@
 require 'roda'
 require 'json'
 
-module Credence
-  # Web controller for Credence API
+module OnlineCheckIn
+  # Web controller for OnlineCheckIn API
   class Api < Roda
     plugin :halt
 
@@ -12,7 +12,7 @@ module Credence
       response['Content-Type'] = 'application/json'
 
       routing.root do
-        { message: 'CredenceAPI up at /api/v1' }.to_json
+        { message: 'OnlineCheckInAPI up at /api/v1' }.to_json
       end
 
       @api_root = 'api/v1'

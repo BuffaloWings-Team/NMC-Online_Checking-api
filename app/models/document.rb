@@ -3,7 +3,7 @@
 require 'json'
 require 'sequel'
 
-module Credence
+module OnlineCheckIn
   # Models a secret document
   class Document < Sequel::Model
     many_to_one :project

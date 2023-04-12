@@ -1,4 +1,4 @@
-# Credence API
+# OnlineCheckIn API
 
 API to store and retrieve confidential development files (configuration, credentials)
 

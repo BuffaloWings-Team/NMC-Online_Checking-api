@@ -4,7 +4,7 @@ require 'roda'
 require 'figaro'
 require 'sequel'
 
-module Credence
+module OnlineCheckIn
   # Configuration for the API
   class Api < Roda
     plugin :environments

@@ -46,7 +46,7 @@ namespace :db do
     require 'sequel'
 
     Sequel.extension :migration
-    @app = Credence::Api
+    @app = OnlineCheckIn::Api
   end
 
   task :load_models do
@@ -61,7 +61,7 @@ namespace :db do
 
   desc 'Destroy data in database; maintain tables'
   task :delete => :load_models do
-    Credence::Project.dataset.destroy
+    OnlineCheckIn::Project.dataset.destroy
   end
 
   desc 'Delete dev or test database file'
@@ -71,7 +71,7 @@ namespace :db do
       return
     end
 
-    db_filename = "app/db/store/#{Credence::Api.environment}.db"
+    db_filename = "app/db/store/#{OnlineCheckIn::Api.environment}.db"
     FileUtils.rm(db_filename)
     puts "Deleted #{db_filename}"
   end
