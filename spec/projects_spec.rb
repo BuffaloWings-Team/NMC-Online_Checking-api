@@ -10,8 +10,8 @@ describe 'Test Project Handling' do
   end
 
   it 'HAPPY: should be able to get list of all projects' do
-    Credence::Project.create(DATA[:projects][0]).save
-    Credence::Project.create(DATA[:projects][1]).save
+    OnlineCheckIn::Project.create(DATA[:projects][0]).save
+    OnlineCheckIn::Project.create(DATA[:projects][1]).save
 
     get 'api/v1/projects'
     _(last_response.status).must_equal 200
@@ -22,8 +22,8 @@ describe 'Test Project Handling' do
 
   it 'HAPPY: should be able to get details of a single project' do
     existing_proj = DATA[:projects][1]
-    Credence::Project.create(existing_proj).save
-    id = Credence::Project.first.id
+    OnlineCheckIn::Project.create(existing_proj).save
+    id = OnlineCheckIn::Project.first.id
 
     get "/api/v1/projects/#{id}"
     _(last_response.status).must_equal 200
@@ -48,7 +48,7 @@ describe 'Test Project Handling' do
     _(last_response.header['Location'].size).must_be :>, 0
 
     created = JSON.parse(last_response.body)['data']['data']['attributes']
-    proj = Credence::Project.first
+    proj = OnlineCheckIn::Project.first
 
     _(created['id']).must_equal proj.id
     _(created['name']).must_equal existing_proj['name']
