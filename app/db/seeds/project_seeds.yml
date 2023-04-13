@@ -1,5 +1,5 @@
 ---
 - name: Test Project
-  repo_url: https://github.com/soumyaray/test_proj
+  repo_url: https://github.com/NMC_OnlineCheckIn-api/test_proj
 - name: Another Project
-  repo_url: https://github.com/soumyaray/another_proj
+  repo_url: https://github.com/NMC_OnlineCheckIn-api/another_proj
