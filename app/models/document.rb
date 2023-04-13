@@ -17,15 +17,15 @@ module OnlineCheckIn
           data: {
             type: 'document',
             attributes: {
-              id:,
-              filename:,
-              relative_path:,
-              description:,
-              content:
+              id: id,
+              filename: filename,
+              relative_path: relative_path,
+              description: description,
+              content: content
             }
           },
           included: {
-            project:
+            project: project
           }
         }, options
       )

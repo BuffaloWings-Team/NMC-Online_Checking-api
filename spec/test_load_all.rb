@@ -5,8 +5,9 @@
 require_relative '../require_app'
 require_app
 
-def app = OnlineCheckIn::Api
-
+def app
+  OnlineCheckIn::Api
+end
 unless app.environment == :production
   require 'rack/test'
   include Rack::Test::Methods # rubocop:disable Style/MixinUsage

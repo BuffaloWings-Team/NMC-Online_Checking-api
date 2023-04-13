@@ -8,7 +8,7 @@ gem 'puma', '~>5.6'
 gem 'roda', '~>3.54'
 
 # Configuration
-gem 'figaro', '~>1.2'
+gem 'figaro'
 gem 'rake'
 
 # Security

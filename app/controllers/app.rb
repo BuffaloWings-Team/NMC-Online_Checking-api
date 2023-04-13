@@ -12,6 +12,7 @@ module OnlineCheckIn
       response['Content-Type'] = 'application/json'
 
       routing.root do
+        response.status = 200
         { message: 'OnlineCheckInAPI up at /api/v1' }.to_json
       end
 

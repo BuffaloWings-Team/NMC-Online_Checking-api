@@ -18,9 +18,9 @@ module OnlineCheckIn
           data: {
             type: 'project',
             attributes: {
-              id:,
-              name:,
-              repo_url:
+              id: id,
+              name: name,
+              repo_url: repo_url
             }
           }
         }, options
