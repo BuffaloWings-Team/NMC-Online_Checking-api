@@ -4,8 +4,8 @@ require 'json'
 require 'sequel'
 
 module OnlineCheckIn
-  # Models a project
-  class Project < Sequel::Model
+  # Models a household
+  class Household < Sequel::Model
     one_to_many :documents
     plugin :association_dependencies, documents: :destroy
 
@@ -16,7 +16,7 @@ module OnlineCheckIn
       JSON(
         {
           data: {
-            type: 'project',
+            type: 'household',
             attributes: {
               id: id,
               name: name,

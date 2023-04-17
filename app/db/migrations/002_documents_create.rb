@@ -6,7 +6,7 @@ Sequel.migration do
   change do
     create_table(:documents) do
       primary_key :id
-      foreign_key :project_id, table: :projects
+      foreign_key :household_id, table: :households
 
       String :filename, null: false
       String :relative_path, null: false, default: ''
@@ -16,7 +16,7 @@ Sequel.migration do
       DateTime :created_at
       DateTime :updated_at
 
-      unique [:project_id, :relative_path, :filename]
+      unique [:household_id, :relative_path, :filename]
     end
   end
 end

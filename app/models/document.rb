@@ -6,7 +6,7 @@ require 'sequel'
 module OnlineCheckIn
   # Models a secret document
   class Document < Sequel::Model
-    many_to_one :project
+    many_to_one :household
 
     plugin :timestamps
 
@@ -25,7 +25,7 @@ module OnlineCheckIn
             }
           },
           included: {
-            project: project
+            household: household
           }
         }, options
       )

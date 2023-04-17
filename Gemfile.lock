@@ -38,13 +38,13 @@ GEM
       ffi (~> 1.0)
     rbnacl (7.1.1)
       ffi
-    regexp_parser (2.7.0)
+    regexp_parser (2.8.0)
     rerun (0.14.0)
       listen (~> 3.0)
     rexml (3.2.5)
-    roda (3.66.0)
+    roda (3.67.0)
       rack
-    rubocop (1.50.0)
+    rubocop (1.50.2)
       json (~> 2.3)
       parallel (~> 1.10)
       parser (>= 3.2.0.0)

@@ -7,12 +7,12 @@ API to store and retrieve confidential development files (configuration, credent
 All routes return Json
 
 - GET  `/`: Root route shows if Web API is running
-- GET  `api/v1/projects/[proj_id]/documents/[doc_id]`: Get a document
-- GET  `api/v1/projects/[proj_id]/documents`: Get list of documents for project
-- POST `api/v1/projects/[ID]/documents`: Upload document for a project
-- GET  `api/v1/projects/[ID]`: Get information about a project
-- GET  `api/v1/projects`: Get list of all projects
-- POST `api/v1/projects`: Create new project
+- GET  `api/v1/households/[house_id]/documents/[doc_id]`: Get a document
+- GET  `api/v1/households/[house_id]/documents`: Get list of documents for household
+- POST `api/v1/households/[ID]/documents`: Upload document for a household
+- GET  `api/v1/households/[ID]`: Get information about a household
+- GET  `api/v1/households`: Get list of all household
+- POST `api/v1/households`: Create new household
 
 ## Install
 

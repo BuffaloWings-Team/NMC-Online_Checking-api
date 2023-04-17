@@ -61,7 +61,7 @@ namespace :db do
 
   desc 'Destroy data in database; maintain tables'
   task :delete => :load_models do
-    OnlineCheckIn::Project.dataset.destroy
+    OnlineCheckIn::Household.dataset.destroy
   end
 
   desc 'Delete dev or test database file'

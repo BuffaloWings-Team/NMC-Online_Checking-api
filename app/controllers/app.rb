@@ -18,33 +18,33 @@ module OnlineCheckIn
 
       @api_root = 'api/v1'
       routing.on @api_root do
-        routing.on 'projects' do
-          @proj_route = "#{@api_root}/projects"
+        routing.on 'households' do
+          @house_route = "#{@api_root}/households"
 
-          routing.on String do |proj_id|
+          routing.on String do |house_id|
             routing.on 'documents' do
-              @doc_route = "#{@api_root}/projects/#{proj_id}/documents"
-              # GET api/v1/projects/[proj_id]/documents/[doc_id]
+              @doc_route = "#{@api_root}/households/#{house_id}/documents"
+              # GET api/v1/households/[house_id]/documents/[doc_id]
               routing.get String do |doc_id|
-                doc = Document.where(project_id: proj_id, id: doc_id).first
+                doc = Document.where(household_id: house_id, id: doc_id).first
                 doc ? doc.to_json : raise('Document not found')
               rescue StandardError => e
                 routing.halt 404, { message: e.message }.to_json
               end
 
-              # GET api/v1/projects/[proj_id]/documents
+              # GET api/v1/households/[house_id]/documents
               routing.get do
-                output = { data: Project.first(id: proj_id).documents }
+                output = { data: Household.first(id: house_id).documents }
                 JSON.pretty_generate(output)
               rescue StandardError
                 routing.halt 404, message: 'Could not find documents'
               end
 
-              # POST api/v1/projects/[ID]/documents
+              # POST api/v1/households/[ID]/documents
               routing.post do
                 new_data = JSON.parse(routing.body.read)
-                proj = Project.first(id: proj_id)
-                new_doc = proj.add_document(new_data)
+                house = Household.first(id: house_id)
+                new_doc = house.add_document(new_data)
 
                 if new_doc
                   response.status = 201
@@ -59,32 +59,32 @@ module OnlineCheckIn
               end
             end
 
-            # GET api/v1/projects/[ID]
+            # GET api/v1/households/[ID]
             routing.get do
-              proj = Project.first(id: proj_id)
-              proj ? proj.to_json : raise('Project not found')
+              house = Household.first(id: house_id)
+              house ? house.to_json : raise('Household not found')
             rescue StandardError => e
               routing.halt 404, { message: e.message }.to_json
             end
           end
 
-          # GET api/v1/projects
+          # GET api/v1/households
           routing.get do
-            output = { data: Project.all }
+            output = { data: Household.all }
             JSON.pretty_generate(output)
           rescue StandardError
-            routing.halt 404, { message: 'Could not find projects' }.to_json
+            routing.halt 404, { message: 'Could not find households' }.to_json
           end
 
-          # POST api/v1/projects
+          # POST api/v1/households
           routing.post do
             new_data = JSON.parse(routing.body.read)
-            new_proj = Project.new(new_data)
-            raise('Could not save project') unless new_proj.save
+            new_house = Household.new(new_data)
+            raise('Could not save household') unless new_house.save
 
             response.status = 201
-            response['Location'] = "#{@proj_route}/#{new_proj.id}"
-            { message: 'Project saved', data: new_proj }.to_json
+            response['Location'] = "#{@house_route}/#{new_house.id}"
+            { message: 'Household saved', data: new_house }.to_json
           rescue StandardError => e
             routing.halt 400, { message: e.message }.to_json
           end

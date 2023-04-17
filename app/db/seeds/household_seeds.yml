@@ -1,5 +1,5 @@
 ---
-- name: Test Project
+- name: Test Household
   repo_url: https://github.com/NMC_OnlineCheckIn-api/test_proj
-- name: Another Project
+- name: Another Household
   repo_url: https://github.com/NMC_OnlineCheckIn-api/another_proj
