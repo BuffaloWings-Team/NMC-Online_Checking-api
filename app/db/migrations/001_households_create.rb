@@ -7,8 +7,9 @@ Sequel.migration do
     create_table(:households) do
       primary_key :id
 
-      String :name, unique: true, null: false
-      String :repo_url, unique: true
+      String :owner, unique: true, null: false
+      String :floorNo, unique: true
+      String :contact
 
       DateTime :created_at
       DateTime :updated_at

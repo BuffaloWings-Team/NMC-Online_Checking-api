@@ -19,8 +19,9 @@ module OnlineCheckIn
             type: 'household',
             attributes: {
               id: id,
-              name: name,
-              repo_url: repo_url
+              owner: owner,
+              floorNo: floorNo,
+              contact: contact
             }
           }
         }, options

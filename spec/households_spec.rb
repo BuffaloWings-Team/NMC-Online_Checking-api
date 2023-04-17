@@ -30,7 +30,7 @@ describe 'Test Household Handling' do
 
     result = JSON.parse last_response.body
     _(result['data']['attributes']['id']).must_equal id
-    _(result['data']['attributes']['name']).must_equal existing_house['name']
+    _(result['data']['attributes']['owner']).must_equal existing_house['owner']
   end
 
   it 'SAD: should return error if unknown household requested' do
@@ -51,7 +51,8 @@ describe 'Test Household Handling' do
     house = OnlineCheckIn::Household.first
 
     _(created['id']).must_equal house.id
-    _(created['name']).must_equal existing_house['name']
-    _(created['repo_url']).must_equal existing_house['repo_url']
+    _(created['owner']).must_equal existing_house['owner']
+    _(created['floorNo']).must_equal existing_house['floorNo']
+    _(created['contact']).must_equal existing_house['contact']
   end
 end
