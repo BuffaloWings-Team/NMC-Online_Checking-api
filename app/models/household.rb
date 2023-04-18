@@ -10,7 +10,8 @@ module OnlineCheckIn
     plugin :association_dependencies, documents: :destroy
 
     plugin :timestamps
-
+    plugin :whitelist_security
+    set_allowed_columns :owner, :floorNo, :contact
     # rubocop:disable Metrics/MethodLength
     def to_json(options = {})
       JSON(
