@@ -7,3 +7,4 @@ db:migrate
 release?
 spec
 style
+newkey:db
