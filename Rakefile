@@ -41,7 +41,7 @@ task :console => :print_env do
   sh 'pry -r ./spec/test_load_all'
 end
 
-namespace :db do # rubocop:disable Metrics/BlockLength
+namespace :db do
   task :load do
     require_app(nil) # load nothing by default
     require 'sequel'

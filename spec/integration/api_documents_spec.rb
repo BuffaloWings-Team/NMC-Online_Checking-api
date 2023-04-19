@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative './spec_helper'
+require_relative '../spec_helper'
 
 describe 'Test Document Handling' do
   include Rack::Test::Methods
@@ -48,37 +48,37 @@ describe 'Test Document Handling' do
 
   describe 'Creating Documents' do
     before do
-      @proj = OnlineCheckIn::Household.first
+      @house = OnlineCheckIn::Household.first
       @doc_data = DATA[:documents][1]
-      @req_header = { 'CONTENT_TYPE' => 'application/json'}
+      @req_header = { 'CONTENT_TYPE' => 'application/json' }
     end
 
-      
-  it 'HAPPY: should be able to create new documents' do
-    # house = OnlineCheckIn::Household.first
-    # doc_data = DATA[:documents][1]
+    it 'HAPPY: should be able to create new documents' do
+      # house = OnlineCheckIn::Household.first
+      # doc_data = DATA[:documents][1]
 
-    req_header = { 'CONTENT_TYPE' => 'application/json' }
-    post "api/v1/households/#{house.id}/documents",
-         @doc_data.to_json, req_header
-    _(last_response.status).must_equal 201
-    _(last_response.header['Location'].size).must_be :>, 0
+      req_header = { 'CONTENT_TYPE' => 'application/json' }
+      post "api/v1/households/#{house.id}/documents",
+           @doc_data.to_json, req_header
+      _(last_response.status).must_equal 201
+      _(last_response.header['Location'].size).must_be :>, 0
 
-    created = JSON.parse(last_response.body)['data']['data']['attributes']
-    doc = OnlineCheckIn::Document.first
+      created = JSON.parse(last_response.body)['data']['data']['attributes']
+      doc = OnlineCheckIn::Document.first
 
-    _(created['id']).must_equal doc.id
-    _(created['filename']).must_equal @doc_data['filename']
-    _(created['description']).must_equal @doc_data['description']
-  end
+      _(created['id']).must_equal doc.id
+      _(created['filename']).must_equal @doc_data['filename']
+      _(created['description']).must_equal @doc_data['description']
+    end
 
-it 'SECURITY: should not create documents with mass assignment' do
+    it 'SECURITY: should not create documents with mass assignment' do
       bad_data = @doc_data.clone
       bad_data['created_at'] = '1900-01-01'
-      post "api/v1/projects/#{@proj.id}/documents",
+      post "api/v1/households/#{@house.id}/documents",
            bad_data.to_json, @req_header
 
       _(last_response.status).must_equal 400
       _(last_response.headers['Location']).must_be_nil
     end
+  end
 end

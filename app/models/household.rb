@@ -3,6 +3,8 @@
 require 'json'
 require 'sequel'
 
+# rubocop:disable Style/HashSyntax
+
 module OnlineCheckIn
   # Models a household
   class Household < Sequel::Model
@@ -31,3 +33,4 @@ module OnlineCheckIn
     # rubocop:enable Metrics/MethodLength
   end
 end
+# rubocop:enable Style/HashSyntax

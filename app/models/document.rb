@@ -3,6 +3,8 @@
 require 'json'
 require 'sequel'
 
+# rubocop:disable Style/HashSyntax
+
 module OnlineCheckIn
   # Models a secret document
   class Document < Sequel::Model
@@ -29,6 +31,7 @@ module OnlineCheckIn
     def content=(plaintext)
       self.content_secure = SecureDB.encrypt(plaintext)
     end
+
     # rubocop:disable Metrics/MethodLength
     def to_json(options = {})
       JSON(
@@ -52,3 +55,4 @@ module OnlineCheckIn
     # rubocop:enable Metrics/MethodLength
   end
 end
+# rubocop:enable Style/HashSyntax

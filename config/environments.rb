@@ -28,12 +28,13 @@ module OnlineCheckIn
       # Connect and make the database accessible to other classes
       db_url = ENV.delete('DATABASE_URL')
       DB = Sequel.connect("#{db_url}?encoding=utf8")
-      def self.DB
+      def self.DB # rubocop:disable Naming/MethodName
         DB
-        # HTTP Request logging
-        configure :development, :production do
-          plugin :common_logger, $stdout
-        end
+      end
+
+      # HTTP Request logging
+      configure :development, :production do
+        plugin :common_logger, $stdout
       end
 
       LOGGER = Logger.new($stderr)
@@ -43,6 +44,7 @@ module OnlineCheckIn
 
       SecureDB.setup(ENV.delete('DB_KEY'))
     end
+    # rubocop:enable Lint/ConstantDefinitionInBlock
 
     configure :development, :test do
       require 'pry'
