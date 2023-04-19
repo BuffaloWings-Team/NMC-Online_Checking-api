@@ -46,13 +46,21 @@ describe 'Test Document Handling' do
     _(last_response.status).must_equal 404
   end
 
+  describe 'Creating Documents' do
+    before do
+      @proj = OnlineCheckIn::Household.first
+      @doc_data = DATA[:documents][1]
+      @req_header = { 'CONTENT_TYPE' => 'application/json'}
+    end
+
+      
   it 'HAPPY: should be able to create new documents' do
-    house = OnlineCheckIn::Household.first
-    doc_data = DATA[:documents][1]
+    # house = OnlineCheckIn::Household.first
+    # doc_data = DATA[:documents][1]
 
     req_header = { 'CONTENT_TYPE' => 'application/json' }
     post "api/v1/households/#{house.id}/documents",
-         doc_data.to_json, req_header
+         @doc_data.to_json, req_header
     _(last_response.status).must_equal 201
     _(last_response.header['Location'].size).must_be :>, 0
 
@@ -60,7 +68,17 @@ describe 'Test Document Handling' do
     doc = OnlineCheckIn::Document.first
 
     _(created['id']).must_equal doc.id
-    _(created['filename']).must_equal doc_data['filename']
-    _(created['description']).must_equal doc_data['description']
+    _(created['filename']).must_equal @doc_data['filename']
+    _(created['description']).must_equal @doc_data['description']
   end
+
+it 'SECURITY: should not create documents with mass assignment' do
+      bad_data = @doc_data.clone
+      bad_data['created_at'] = '1900-01-01'
+      post "api/v1/projects/#{@proj.id}/documents",
+           bad_data.to_json, @req_header
+
+      _(last_response.status).must_equal 400
+      _(last_response.headers['Location']).must_be_nil
+    end
 end

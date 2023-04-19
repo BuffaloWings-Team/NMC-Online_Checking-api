@@ -1,0 +1,33 @@
+# frozen_string_literal: true
+
+require_relative './spec_helper'
+
+describe 'Test Document Handling' do
+  include Rack::Test::Methods
+
+  before do
+    wipe_database
+
+    DATA[:households].each do |household_data|
+      OnlineCheckIn::Household.create(household_data)
+    end
+  end
+
+  it 'SECURITY: should not use deterministic integers' do
+    doc_data = DATA[:documents][1]
+    house = OnlineCheckIn::Project.first
+    new_doc = proj.add_document(doc_data)
+
+    _(new_doc.id.is_a?(Numeric)).must_equal false
+  end
+
+  it 'SECURITY: should secure sensitive attributes' do
+    doc_data = DATA[:documents][1]
+    house = OnlineCheckIn::Project.first
+    new_doc = proj.add_document(doc_data)
+    stored_doc = app.DB[:documents].first
+
+    _(stored_doc[:description_secure]).wont_equal new_doc.description
+    _(stored_doc[:content_secure]).wont_equal new_doc.content
+  end
+end

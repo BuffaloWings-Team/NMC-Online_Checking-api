@@ -36,10 +36,10 @@ module OnlineCheckIn
         end
       end
 
-      #LOGGER = Logger.new($stderr)
-      #def self.logger
-      #  LOGGER
-      #end
+      LOGGER = Logger.new($stderr)
+      def self.logger
+        LOGGER
+      end
 
       SecureDB.setup(ENV.delete('DB_KEY'))
     end
