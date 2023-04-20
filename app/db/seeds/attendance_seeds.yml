@@ -1,0 +1,6 @@
+---
+- status: "accept"
+
+- status: "decline"
+
+- status: "undecided"
