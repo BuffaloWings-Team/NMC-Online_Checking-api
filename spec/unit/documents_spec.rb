@@ -3,8 +3,6 @@
 require_relative '../spec_helper'
 
 describe 'Test Document Handling' do
-  include Rack::Test::Methods
-
   before do
     wipe_database
 

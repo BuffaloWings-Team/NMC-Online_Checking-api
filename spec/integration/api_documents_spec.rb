@@ -29,7 +29,7 @@ describe 'Test Document Handling' do
   it 'HAPPY: should be able to get details of a single document' do
     doc_data = DATA[:documents][1]
     house = OnlineCheckIn::Household.first
-    doc = house.add_document(doc_data).save
+    doc = house.add_document(doc_data)
 
     get "/api/v1/households/#{house.id}/documents/#{doc.id}"
     _(last_response.status).must_equal 200
