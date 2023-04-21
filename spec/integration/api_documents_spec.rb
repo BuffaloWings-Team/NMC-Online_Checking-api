@@ -54,9 +54,6 @@ describe 'Test Document Handling' do
     end
 
     it 'HAPPY: should be able to create new documents' do
-      # house = OnlineCheckIn::Household.first
-      # doc_data = DATA[:documents][1]
-
       req_header = { 'CONTENT_TYPE' => 'application/json' }
       post "api/v1/households/#{@house.id}/documents",
            @doc_data.to_json, req_header
