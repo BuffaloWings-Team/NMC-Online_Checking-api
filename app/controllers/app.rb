@@ -45,7 +45,7 @@ module OnlineCheckIn
                 new_data = JSON.parse(routing.body.read)
                 house = Household.first(id: house_id)
                 new_doc = house.add_document(new_data)
-                raise 'Could not save document'
+                raise 'Could not save document' unless new_doc
 
                 response.status = 201
                 response['Location'] = "#{@doc_route}/#{new_doc.id}"
