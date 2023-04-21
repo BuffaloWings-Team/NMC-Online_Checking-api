@@ -40,7 +40,7 @@ describe 'Test Household Handling' do
       _(last_response.status).must_equal 404
     end
 
-    it 'SECURITY: should prevent basize SQL injection targeting IDs' do
+    it 'SECURITY: should prevent basic SQL injection targeting IDs' do
       OnlineCheckIn::Household.create(owner: 'New Household')
       OnlineCheckIn::Household.create(owner: 'Newer Household')
       get 'api/v1/households/2%20or%20id%3E0'
@@ -74,10 +74,9 @@ describe 'Test Household Handling' do
     end
 
     it 'SECURITY: should not create documents with mass assignment' do
-      bad_data = @doc_data.clone
+      bad_data = @house_data.clone
       bad_data['created_at'] = '1900-01-01'
-      post "api/v1/households/#{@house.id}/documents",
-           bad_data.to_json, @req_header
+      post 'api/v1/households/', bad_data.to_json, @req_header
 
       _(last_response.status).must_equal 400
       _(last_response.headers['Location']).must_be_nil
