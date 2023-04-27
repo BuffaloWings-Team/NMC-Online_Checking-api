@@ -9,10 +9,13 @@ require 'yaml'
 require_relative 'test_load_all'
 
 def wipe_database
-  app.DB[:members].delete
-  app.DB[:households].delete
+  OnlineCheckIn::Member.map(&:destroy)
+  OnlineCheckIn::Household.map(&:destroy)
+  OnlineCheckIn::Account.map(&:destroy)
 end
 
-DATA = {} # rubocop:disable Style/MutableConstant
-DATA[:members] = YAML.safe_load File.read('app/db/seeds/member_seeds.yml')
-DATA[:households] = YAML.safe_load File.read('app/db/seeds/household_seeds.yml')
+DATA = {
+  accounts: YAML.load(File.read('app/db/seeds/accounts_seed.yml')),
+  members: YAML.load(File.read('app/db/seeds/member_seed.yml')),
+  household: YAML.load(File.read('app/db/seeds/household_seed.yml'))
+}.freeze

@@ -6,6 +6,7 @@ Sequel.migration do
   change do
     create_table(:households) do
       primary_key :id
+      foreign_key :owner_id, :accounts
 
       String :owner, unique: true, null: false
       String :floorNo, unique: true
