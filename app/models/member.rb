@@ -13,23 +13,15 @@ module OnlineCheckIn
     plugin :uuid, field: :id
     plugin :timestamps
     plugin :whitelist_security
-    set_allowed_columns :filename, :relative_path, :description, :content
+    set_allowed_columns :first_name, :last_name, :dob
 
     # Secure getters and setters
-    def description
-      SecureDB.decrypt(description_secure)
+    def dob
+      SecureDB.decrypt(dob_secure)
     end
 
-    def description=(plaintext)
-      self.description_secure = SecureDB.encrypt(plaintext)
-    end
-
-    def content
-      SecureDB.decrypt(content_secure)
-    end
-
-    def content=(plaintext)
-      self.content_secure = SecureDB.encrypt(plaintext)
+    def dob=(plaintext)
+      self.dob_secure = SecureDB.encrypt(plaintext)
     end
 
     # rubocop:disable Metrics/MethodLength
@@ -37,13 +29,12 @@ module OnlineCheckIn
       JSON(
         {
           data: {
-            type: 'document',
+            type: 'member',
             attributes: {
               id: id,
-              name: name,
-              relative_path: relative_path,
-              description: description,
-              content: content
+              first_name: first_name,
+              last_name: last_name,
+              dob: dob
             }
           },
           included: {

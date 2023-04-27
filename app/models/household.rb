@@ -8,8 +8,8 @@ require 'sequel'
 module OnlineCheckIn
   # Models a household
   class Household < Sequel::Model
-    one_to_many :documents
-    plugin :association_dependencies, documents: :destroy
+    one_to_many :members
+    plugin :association_dependencies, members: :destroy
 
     plugin :timestamps
     plugin :whitelist_security

@@ -22,34 +22,34 @@ module OnlineCheckIn
           @house_route = "#{@api_root}/households"
 
           routing.on String do |house_id|
-            routing.on 'documents' do
-              @doc_route = "#{@api_root}/households/#{house_id}/documents"
-              # GET api/v1/households/[house_id]/documents/[doc_id]
-              routing.get String do |doc_id|
-                doc = Document.where(household_id: house_id, id: doc_id).first
-                doc ? doc.to_json : raise('Document not found')
+            routing.on 'members' do
+              @member_route = "#{@api_root}/households/#{house_id}/members"
+              # GET api/v1/households/[house_id]/members/[member_id]
+              routing.get String do |member_id|
+                member = Member.where(household_id: house_id, id: member_id).first
+                member ? member.to_json : raise('member not found')
               rescue StandardError => e
                 routing.halt 404, { message: e.message }.to_json
               end
 
-              # GET api/v1/households/[house_id]/documents
+              # GET api/v1/households/[house_id]/members
               routing.get do
-                output = { data: Household.first(id: house_id).documents }
+                output = { data: Household.first(id: house_id).members }
                 JSON.pretty_generate(output)
               rescue StandardError
-                routing.halt 404, message: 'Could not find documents'
+                routing.halt 404, message: 'Could not find members'
               end
 
-              # POST api/v1/households/[ID]/documents
+              # POST api/v1/households/[ID]/members
               routing.post do
                 new_data = JSON.parse(routing.body.read)
                 house = Household.first(id: house_id)
-                new_doc = house.add_document(new_data)
-                raise 'Could not save document' unless new_doc
+                new_member = house.add_member(new_data)
+                raise 'Could not save member' unless new_member
 
                 response.status = 201
-                response['Location'] = "#{@doc_route}/#{new_doc.id}"
-                { message: 'Document saved', data: new_doc }.to_json
+                response['Location'] = "#{@member_route}/#{new_member.id}"
+                { message: 'member saved', data: new_member }.to_json
               rescue Sequel::MassAssignmentRestriction
                 Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
                 routing.halt 400, { message: 'Illegal Attributes' }.to_json
