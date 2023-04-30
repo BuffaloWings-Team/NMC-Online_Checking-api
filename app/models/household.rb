@@ -19,7 +19,7 @@ module OnlineCheckIn
 
     plugin :association_dependencies,
            members: :destroy,
-           collaborators: nullify
+           collaborators: :nullify
 
     plugin :timestamps
     plugin :whitelist_security
