@@ -27,8 +27,8 @@ end
 def create_owned_households
   OWNER_INFO.each do |owner|
     account = OnlineCheckIn::Account.first(username: owner['username'])
-    owner['household_name'].each do |household_name|
-      household_data = HOUSEHOLD_INFO.find { |household| household['name'] == household_name }
+    owner['household_owner'].each do |household_owner|
+      household_data = HOUSEHOLD_INFO.find { |household| household['owner'] == household_owner }
       OnlineCheckIn::CreateHouseholdForOwner.call(
         owner_id: account.id, household_data:
       )
@@ -51,7 +51,7 @@ end
 def add_collaborators
   contrib_info = CONTRIB_INFO
   contrib_info.each do |contrib|
-    household = OnlineCheckIn::Household.first(name: contrib['house_name'])
+    household = OnlineCheckIn::Household.first(owner: contrib['house_owner'])
     contrib['collaborator_email'].each do |email|
       OnlineCheckIn::AddCollaboratorToHousehold.call(
         email:, household_id: household.id

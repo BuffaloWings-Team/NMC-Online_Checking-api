@@ -1,8 +1,8 @@
 ---
-- household_name: johnsonman
+- household_owner: johnsonman
   collaborator_email:
     - gustav@nthu.edu.tw
     - teslamoon@nthu.edu.tw
-- household_name: bobman
+- household_owner: bobman
   collaborator_email:
     - lonely123@gmail.com

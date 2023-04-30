@@ -1,19 +1,19 @@
 # frozen_string_literal: true
 
 module OnlineCheckIn
-  # Add a collaborator to another owner's existing project
+  # Add a collaborator to another owner's existing household
   class AddCollaboratorToHousehold
     # Error for owner cannot be collaborator
     class OwnerNotCollaboratorError < StandardError
-      def message = 'Owner cannot be collaborator of project'
+      def message = 'Owner cannot be collaborator of household'
     end
 
-    def self.call(email:, project_id:)
+    def self.call(email:, household_id:)
       collaborator = Account.first(email:)
-      project = Project.first(id: project_id)
+      household = Household.first(id: household_id)
       raise(OwnerNotCollaboratorError) if household.owner.id == collaborator.id
 
-      project.add_collaborator(collaborator)
+      household.add_collaborator(collaborator)
     end
   end
 end
