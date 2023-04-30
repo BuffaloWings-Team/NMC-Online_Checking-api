@@ -58,8 +58,6 @@ describe 'Test Household Handling' do
     end
 
     it 'HAPPY: should be able to create new households' do
-      # existing_house = DATA[:households][1]
-      # req_header = { 'CONTENT_TYPE' => 'application/json' }
       post 'api/v1/households', @house_data.to_json, @req_header
       _(last_response.status).must_equal 201
       _(last_response.header['Location'].size).must_be :>, 0
@@ -73,7 +71,7 @@ describe 'Test Household Handling' do
       _(created['contact']).must_equal @house_data['contact']
     end
 
-    it 'SECURITY: should not create documents with mass assignment' do
+    it 'SECURITY: should not create households with mass assignment' do
       bad_data = @house_data.clone
       bad_data['created_at'] = '1900-01-01'
       post 'api/v1/households/', bad_data.to_json, @req_header

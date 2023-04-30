@@ -16,6 +16,6 @@ end
 
 DATA = {
   accounts: YAML.load(File.read('app/db/seeds/accounts_seed.yml')),
-  members: YAML.load(File.read('app/db/seeds/member_seed.yml')),
-  household: YAML.load(File.read('app/db/seeds/household_seed.yml'))
+  members: YAML.load(File.read('app/db/seeds/members_seed.yml')),
+  households: YAML.load(File.read('app/db/seeds/households_seed.yml'))
 }.freeze
