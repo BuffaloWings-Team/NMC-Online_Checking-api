@@ -8,6 +8,7 @@ module OnlineCheckIn
   # Models a registered account
   class Account < Sequel::Model
     one_to_many :owned_households, class: :'OnlineCheckIn::Household', key: :owner_id
+    
     many_to_many :collaborations,
                  class: :'OnlineCheckIn::Household',
                  join_table: :accounts_households,
@@ -39,9 +40,9 @@ module OnlineCheckIn
       JSON(
         {
           type: 'account',
-          id:,
-          username:,
-          email:
+          id: id,
+          username: username,
+          email: email
         }, options
       )
     end
