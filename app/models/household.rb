@@ -18,7 +18,8 @@ module OnlineCheckIn
     one_to_many :members
 
     plugin :association_dependencies,
-           members: :destroy
+           members: :destroy,
+           collaborators: :nullify
 
     plugin :timestamps
     plugin :whitelist_security
