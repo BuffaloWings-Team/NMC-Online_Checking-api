@@ -17,6 +17,11 @@ Rake::TestTask.new(:spec) do |t|
   t.warning = false
 end
 
+desc 'Rerun tests on live code changes'
+task :respec do
+  sh 'rerun -c rake spec'
+end
+
 desc 'Runs rubocop on tested code'
 task :style => [:spec, :audit] do
   sh 'rubocop .'
@@ -42,32 +47,27 @@ task :console => :print_env do
 end
 
 namespace :db do
-  task :load do
-    require_app(nil) # load nothing by default
-    require 'sequel'
+  require_app(nil) # load config code files only
+  require 'sequel'
 
-    Sequel.extension :migration
-    @app = OnlineCheckIn::Api
-  end
-
-  task :load_models do
-    require_app('models')
-  end
+  Sequel.extension :migration
+  app = OnlineCheckIn::Api
 
   desc 'Run migrations'
-  task :migrate => [:load, :print_env] do
+  task :migrate => :print_env do
     puts 'Migrating database to latest'
-    Sequel::Migrator.run(@app.DB, 'app/db/migrations')
+    Sequel::Migrator.run(app.DB, 'app/db/migrations')
   end
 
-  desc 'Destroy data in database; maintain tables'
-  task :delete => :load_models do
-    OnlineCheckIn::Household.dataset.destroy
+  desc 'Deletes the database'
+  task :delete do
+    app.DB[:members].delete
+    app.DB[:households].delete
   end
 
   desc 'Delete dev or test database file'
-  task :drop => :load do
-    if @app.environment == :production
+  task :drop do
+    if app.environment == :production
       puts 'Cannot wipe production database!'
       return
     end
@@ -83,7 +83,7 @@ namespace :db do
 
   task :reset_seeds => [:load_models] do
     app.DB[:schema_seeds].delete if app.DB.tables.include?(:schema_seeds)
-    Credence::Account.dataset.destroy
+    OnlineCheckIn::Account.dataset.destroy
   end
 
   desc 'Seeds the development database'

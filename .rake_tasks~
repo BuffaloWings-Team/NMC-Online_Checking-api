@@ -4,6 +4,7 @@ console
 db:delete
 db:drop
 db:migrate
+db:seed
 release?
 spec
 style

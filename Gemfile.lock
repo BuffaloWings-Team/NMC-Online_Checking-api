@@ -15,7 +15,6 @@ GEM
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
     method_source (1.0.0)
-    mini_portile2 (2.8.1)
     minitest (5.18.0)
     minitest-rg (5.2.0)
       minitest (~> 5.0)
@@ -61,8 +60,11 @@ GEM
       rubocop-ast (>= 0.4.0)
     ruby-progressbar (1.13.0)
     sequel (5.67.0)
-    sqlite3 (1.6.2)
-      mini_portile2 (~> 2.8.0)
+    sequel-seed (1.1.2)
+      sequel (>= 4.49.0)
+    sqlite3 (1.6.2-arm64-darwin)
+    sqlite3 (1.6.2-x86_64-darwin)
+    sqlite3 (1.6.2-x86_64-linux)
     thor (1.2.1)
     unicode-display_width (2.4.2)
 
@@ -90,6 +92,7 @@ DEPENDENCIES
   rubocop
   rubocop-performance
   sequel (~> 5.55)
+  sequel-seed
   sqlite3 (~> 1.4)
 
 BUNDLED WITH
