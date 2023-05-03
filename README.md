@@ -49,7 +49,20 @@ Run the test specification script in `Rakefile`:
 ```shell
 rake spec
 ```
+## Develop/Debug
 
+Add fake data to the development database to work on this project:
+
+```shell
+rake db:seed
+```
+## Execute
+
+Launch the API using:
+
+```shell
+puma
+```
 ## Release check
 
 Before submitting pull requests, please check if specs, style, and dependency audits pass:
