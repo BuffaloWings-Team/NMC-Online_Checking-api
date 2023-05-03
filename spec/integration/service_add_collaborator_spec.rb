@@ -15,7 +15,7 @@ describe 'Test AddCollaboratorToHousehold service' do
     @owner = OnlineCheckIn::Account.all[0]
     @collaborator = OnlineCheckIn::Account.all[1]
     @household = OnlineCheckIn::CreateHouseholdForOwner.call(
-      owner_id: @owner.id, household_data:
+      owner_id: @owner.id, household_data: 
     )
   end
 
