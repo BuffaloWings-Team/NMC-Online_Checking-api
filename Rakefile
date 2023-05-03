@@ -77,6 +77,16 @@ namespace :db do
     puts "Deleted #{db_filename}"
   end
 
+  desc 'Delete all database file'
+  task :dropAll do
+    if app.environment == :production
+      puts 'Cannot wipe production database!'
+      return
+    end
+    Dir.glob('app/db/store/*.db').each { |filename| FileUtils.rm(filename) }
+    puts 'Deleted all the db files'
+  end
+
   task :load_models do
     require_app(%w[lib models services])
   end
