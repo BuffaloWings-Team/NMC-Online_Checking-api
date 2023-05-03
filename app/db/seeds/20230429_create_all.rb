@@ -28,7 +28,7 @@ def create_owned_households
   OWNER_INFO.each do |owner|
     account = OnlineCheckIn::Account.first(username: owner['username'])
     owner['household_owner'].each do |household_owner|
-      house_data = HOUSEHOLD_INFO.find { |household| household['house# rubocop:disable Style/HashSyntaxowner'] == household_owner }
+      house_data = HOUSEHOLD_INFO.find { |household| household['houseowner'] == household_owner }
       OnlineCheckIn::CreateHouseholdForOwner.call(
         owner_id: account.id, household_data: house_data
       )
