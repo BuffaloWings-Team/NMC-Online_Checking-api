@@ -58,7 +58,7 @@ module OnlineCheckIn
               # GET api/v1/households/[house_id]/members/[member_id]
               routing.get String do |member_id|
                 member = Member.where(household_id: house_id, id: member_id).first
-                member ? member.to_json : raise('member not found')
+                member ? member.to_json : raise('Member not found')
               rescue StandardError => e
                 routing.halt 404, { message: e.message }.to_json
               end
@@ -76,7 +76,10 @@ module OnlineCheckIn
                 new_data = JSON.parse(routing.body.read)
                 house = Household.first(id: house_id)
                 new_member = house.add_member(new_data)
-                raise 'Could not save member' unless new_member
+                # raise 'Could not save member' unless new_member
+                # new_member = CreateMemberForHousehold.call(
+                #  household_id: house_id, member_data: new_data
+                # )
 
                 response.status = 201
                 response['Location'] = "#{@member_route}/#{new_member.id}"

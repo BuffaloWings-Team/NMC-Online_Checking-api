@@ -83,8 +83,8 @@ namespace :db do
       puts 'Cannot wipe production database!'
       return
     end
-    Dir.glob('app/db/store/*.db').each { |filename| FileUtils.rm(filename)}
-    puts "Deleted all the db files"
+    Dir.glob('app/db/store/*.db').each { |filename| FileUtils.rm(filename) }
+    puts 'Deleted all the db files'
   end
 
   task :load_models do
