@@ -4,11 +4,13 @@ require 'sequel'
 require 'json'
 require_relative './password'
 
+# rubocop:disable Style/HashSyntax
+
 module OnlineCheckIn
   # Models a registered account
   class Account < Sequel::Model
     one_to_many :owned_households, class: :'OnlineCheckIn::Household', key: :owner_id
-    
+
     many_to_many :collaborations,
                  class: :'OnlineCheckIn::Household',
                  join_table: :accounts_households,
@@ -48,3 +50,4 @@ module OnlineCheckIn
     end
   end
 end
+# rubocop:enable Style/HashSyntax

@@ -23,7 +23,7 @@ Security/YAMLLoad:
 Style/HashSyntax:
   Enabled: true
   Exclude:
-    - Rakefile
+   - Rakefile
 
 Style/SymbolArray:
   Enabled: true

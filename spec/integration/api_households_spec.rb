@@ -31,7 +31,7 @@ describe 'Test Household Handling' do
 
       result = JSON.parse last_response.body
       _(result['data']['attributes']['id']).must_equal id
-      _(result['data']['attributes']['owner']).must_equal existing_house['owner']
+      _(result['data']['attributes']['houseowner']).must_equal existing_house['houseowner']
     end
 
     it 'SAD: should return error if unknown household requested' do
@@ -41,8 +41,8 @@ describe 'Test Household Handling' do
     end
 
     it 'SECURITY: should prevent basic SQL injection targeting IDs' do
-      OnlineCheckIn::Household.create(owner: 'New Household')
-      OnlineCheckIn::Household.create(owner: 'Newer Household')
+      OnlineCheckIn::Household.create(houseowner: 'New Household')
+      OnlineCheckIn::Household.create(houseowner: 'Newer Household')
       get 'api/v1/households/2%20or%20id%3E0'
 
       # deliberately not reporting error -- don't give attacker information
@@ -66,7 +66,7 @@ describe 'Test Household Handling' do
       house = OnlineCheckIn::Household.first
 
       _(created['id']).must_equal house.id
-      _(created['owner']).must_equal @house_data['owner']
+      _(created['houseowner']).must_equal @house_data['houseowner']
       _(created['floorNo']).must_equal @house_data['floorNo']
       _(created['contact']).must_equal @house_data['contact']
     end

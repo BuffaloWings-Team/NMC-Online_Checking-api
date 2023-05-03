@@ -23,7 +23,7 @@ module OnlineCheckIn
 
     plugin :timestamps
     plugin :whitelist_security
-    set_allowed_columns :owner, :floorNo, :contact
+    set_allowed_columns :houseowner, :floorNo, :contact
     # rubocop:disable Metrics/MethodLength
     def to_json(options = {})
       JSON(
@@ -32,7 +32,7 @@ module OnlineCheckIn
             type: 'household',
             attributes: {
               id: id,
-              owner: owner,
+              houseowner: houseowner,
               floorNo: floorNo,
               contact: contact
             }
