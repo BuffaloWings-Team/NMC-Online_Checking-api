@@ -97,7 +97,7 @@ DEPENDENCIES
   rubocop-performance
   sequel (~> 5.55)
   sequel-seed
-  sqlite3 (~> 1.4)
+  sqlite3 (~> 1.6)
 
 BUNDLED WITH
    2.4.8
