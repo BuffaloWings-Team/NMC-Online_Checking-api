@@ -29,7 +29,7 @@ module OnlineCheckIn
             routing.halt 404, message: 'Could not find members'
           end
 
-          # POST api/v1/households/[ID]/members
+          # POST api/v1/households/[member_id]/members
           routing.post do
             new_data = JSON.parse(routing.body.read)
 
@@ -52,7 +52,7 @@ module OnlineCheckIn
           end
         end
 
-        # GET api/v1/households/[ID]
+        # GET api/v1/households/[house_id]
         routing.get do
           house = Household.first(id: house_id)
           house ? house.to_json : raise('Household not found')

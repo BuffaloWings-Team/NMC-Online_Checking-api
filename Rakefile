@@ -61,8 +61,7 @@ namespace :db do
 
   desc 'Deletes the database'
   task :delete do
-    app.DB[:members].delete
-    app.DB[:households].delete
+    OnlineCheckIn::Account.dataset.destroy
   end
 
   desc 'Delete dev or test database file'
@@ -113,6 +112,14 @@ namespace :newkey do
   task :db do
     require_app('lib')
     puts "DB_KEY: #{SecureDB.generate_key}"
+  end
+end
+
+namespace :run do
+  # Run in development mode
+  desc 'Run API in development mode'
+  task :dev do
+    sh 'puma -p 3000'
   end
 end
 # rubocop:enable Style/HashSyntax, Style/SymbolArray

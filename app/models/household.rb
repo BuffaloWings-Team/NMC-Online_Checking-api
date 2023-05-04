@@ -28,14 +28,12 @@ module OnlineCheckIn
     def to_json(options = {})
       JSON(
         {
-          data: {
-            type: 'household',
-            attributes: {
-              id: id,
-              houseowner: houseowner,
-              floorNo: floorNo,
-              contact: contact
-            }
+          type: 'household',
+          attributes: {
+            id: id,
+            houseowner: houseowner,
+            floorNo: floorNo,
+            contact: contact
           }
         }, options
       )
