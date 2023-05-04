@@ -42,10 +42,9 @@ module OnlineCheckIn
       JSON(
         {
           type: 'account',
-          attributes: {
-            username: username,
-            email: email
-          }
+          id: id,
+          username: username,
+          email: email
         }, options
       )
     end

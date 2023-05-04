@@ -28,12 +28,14 @@ module OnlineCheckIn
     def to_json(options = {})
       JSON(
         {
-          type: 'household',
-          attributes: {
-            id: id,
-            houseowner: houseowner,
-            floorNo: floorNo,
-            contact: contact
+          data: {
+            type: 'household',
+            attributes: {
+              id: id,
+              houseowner: houseowner,
+              floorNo: floorNo,
+              contact: contact
+            }
           }
         }, options
       )
@@ -42,3 +44,4 @@ module OnlineCheckIn
   end
 end
 # rubocop:enable Style/HashSyntax
+
