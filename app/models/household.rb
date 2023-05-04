@@ -44,4 +44,3 @@ module OnlineCheckIn
   end
 end
 # rubocop:enable Style/HashSyntax
-
