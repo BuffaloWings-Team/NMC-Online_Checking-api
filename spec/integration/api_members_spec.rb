@@ -40,6 +40,7 @@ describe 'Test Member Handling' do
     result = JSON.parse last_response.body
     _(result['attributes']['id']).must_equal member.id
     _(result['attributes']['first_name']).must_equal member_data['first_name']
+    _(result['attributes']['last_name']).must_equal member_data['last_name']
   end
 
   it 'SAD: should return error if unknown member requested' do
@@ -68,6 +69,7 @@ describe 'Test Member Handling' do
 
       _(created['id']).must_equal member.id
       _(created['first_name']).must_equal @member_data['first_name']
+      _(created['last_name']).must_equal @member_data['last_name']
       _(created['dob']).must_equal @member_data['dob']
     end
 
