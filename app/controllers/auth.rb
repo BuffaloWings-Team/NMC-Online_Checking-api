@@ -3,7 +3,7 @@
 require 'roda'
 require_relative './app'
 
-module OnlineCheckin
+module OnlineCheckIn
   # Web controller for OnlineCheckIn API
   class Api < Roda
     route('auth') do |routing|
