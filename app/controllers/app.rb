@@ -16,8 +16,11 @@ module OnlineCheckIn
     route do |routing|
       response['Content-Type'] = 'application/json'
 
+      secure_request?(routing) ||
+        routing.halt(403, { message: 'TLS/SSL Required' }.to_json)
+
       routing.root do
-        { message: 'CredenceAPI up at /api/v1' }.to_json
+        { message: 'OnlineCheckInAPI up at /api/v1' }.to_json
       end
 
       routing.on 'api' do
