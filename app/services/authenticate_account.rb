@@ -9,7 +9,7 @@ module OnlineCheckIn
     end
 
     def message
-      "Invalid Credentials for: #{@credentials[:username]}"
+      "Invalid Credentials for: #{@credentials[:username]}#{@credentials[:password]}"
     end
   end
 
@@ -18,6 +18,7 @@ module OnlineCheckIn
     def self.call(credentials)
       account = Account.first(username: credentials[:username])
       account.password?(credentials[:password]) ? account : raise
+ 
     rescue StandardError
       raise UnauthorizedError, credentials
     end

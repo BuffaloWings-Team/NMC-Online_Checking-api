@@ -1,10 +1,10 @@
 ---
-- username: jacob.john
-  email: jpoop@nthu.edu.tw
-  password: mypa$$w0rdispoop
-- username: jake.joe
-  email: 11100023@nthu.edu.tw
-  password: randomthings
-- username: chatgpt
-  email: chatgptisthebest@gmail.com
-  password: notanAI
+  - username: jacob.john
+    email: jpoop@nthu.edu.tw
+    password: mypa$$w0rdispoop
+  - username: jake.joe
+    email: 11100023@nthu.edu.tw
+    password: randomthings
+  - username: chatgpt
+    email: chatgptisthebest@gmail.com
+    password: notanAI
