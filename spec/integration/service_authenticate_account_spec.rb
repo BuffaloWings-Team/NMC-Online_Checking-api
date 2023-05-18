@@ -39,32 +39,33 @@ end
 
 # Send correct authorization header to test API resource requests
 describe 'Getting households' do
-    describe 'Getting list of households' do
+  describe 'Getting list of households' do
     before do
-    @account_data = DATA[:accounts][0]
-    account = OnlineCheckIn::Account.create(@account_data)
-    account.add_owned_project(DATA[:households][0])
-    account.add_owned_project(DATA[:households][1])
+      @account_data = DATA[:accounts][0]
+      account = OnlineCheckIn::Account.create(@account_data)
+      account.add_owned_project(DATA[:households][0])
+      account.add_owned_project(DATA[:households][1])
     end
     # First get authenticated account + auth token
     it 'HAPPY: should get list for authorized account' do
-    auth = OnlineCheckIn::AuthenticateAccount.call(
-    username: @account_data['username'],
-    password: @account_data['password']
-    )
-    # Pass auth token in authorization header of resource request
-    header 'AUTHORIZATION', "Bearer #{auth[:attributes][:auth_token]}"
-    get 'api/v1/households'
-    _(last_response.status).must_equal 200
-    result = JSON.parse last_response.body
-    _(result['data'].count).must_equal 2
+      auth = OnlineCheckIn::AuthenticateAccount.call(
+        username: @account_data['username'],
+        password: @account_data['password']
+      )
+      # Pass auth token in authorization header of resource request
+      header 'AUTHORIZATION', "Bearer #{auth[:attributes][:auth_token]}"
+      get 'api/v1/households'
+      _(last_response.status).must_equal 200
+      result = JSON.parse last_response.body
+      _(result['data'].count).must_equal 2
     end
     # sned bad auth token in authenticationheader
     it 'BAD: should not process for unauthorized account' do
-    header 'AUTHORIZATION', 'Bearer bad_token'
-    get 'api/v1/households'
-    _(last_response.status).must_equal 403
-    result = JSON.parse last_response.body
-    _(result['data']).must_be_nil
+      header 'AUTHORIZATION', 'Bearer bad_token'
+      get 'api/v1/households'
+      _(last_response.status).must_equal 403
+      result = JSON.parse last_response.body
+      _(result['data']).must_be_nil
     end
-    en
+  end
+end

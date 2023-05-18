@@ -37,7 +37,7 @@ module OnlineCheckIn
     def html_email
       <<~END_EMAIL
         <H1>OnlineCheckIn App Registration Received</H1>
-        <p>Please <a href=\"#{@registration[:verification_url]}\">click here</a>
+        <p>Please <a href="#{@registration[:verification_url]}">click here</a>
         to validate your email.
         You will be asked to set a password to activate your account.</p>
       END_EMAIL

@@ -33,9 +33,6 @@ module OnlineCheckIn
           routing.post do
             new_data = JSON.parse(routing.body.read)
 
-            # house = Household.first(id: house_id)
-            # new_member = house.add_member(new_data)
-            # raise 'Could not save member' unless new_member
             new_member = CreateMemberForHousehold.call(
               household_id: house_id, member_data: new_data
             )
