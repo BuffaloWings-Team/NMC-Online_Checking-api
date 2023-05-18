@@ -25,6 +25,7 @@ module OnlineCheckIn
         Figaro.env
       end
 
+      # Database Setup
       # Connect and make the database accessible to other classes
       db_url = ENV.delete('DATABASE_URL')
       DB = Sequel.connect("#{db_url}?encoding=utf8")
@@ -42,7 +43,8 @@ module OnlineCheckIn
         LOGGER
       end
 
-      SecureDB.setup(ENV.delete('DB_KEY'))
+      SecureDB.setup(ENV.delete('DB_KEY')) # Load crypto key
+      AuthToken.setup(ENV.fetch('MSG_KEY')) # Load crypto key
     end
     # rubocop:enable Lint/ConstantDefinitionInBlock
 

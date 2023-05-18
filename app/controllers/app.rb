@@ -2,16 +2,16 @@
 
 require 'roda'
 require 'json'
+require_relative './helpers'
 
 module OnlineCheckIn
   # Web controller for OnlineCheckIn API
   class Api < Roda
     plugin :halt
     plugin :multi_route
-
-    def secure_request?(routing)
-      routing.scheme.casecmp(Api.config.SECURE_SCHEME).zero?
-    end
+    plugin :request_headers
+    # Plugin to process HTTP headers faster with Mixin helpers
+    include SecureRequestHelpers
 
     route do |routing|
       response['Content-Type'] = 'application/json'
@@ -19,8 +19,15 @@ module OnlineCheckIn
       secure_request?(routing) ||
         routing.halt(403, { message: 'TLS/SSL Required' }.to_json)
 
+      # Account information is extracted from auth_token before request
+      begin
+        @auth_account = authenticated_account(routing.headers)
+      rescue AuthToken::InvalidTokenError
+        routing.halt 403, { message: 'Invalid auth token' }.to_json
+      end
+
       routing.root do
-        { message: 'OnlineCheckInAPI up at /api/v1' }.to_json
+        { message: 'CredenceAPI up at /api/v1' }.to_json
       end
 
       routing.on 'api' do
