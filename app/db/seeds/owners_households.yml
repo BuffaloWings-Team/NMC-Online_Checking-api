@@ -1,0 +1,7 @@
+---
+  - username: jacob.john
+    household_owner:
+      - Test Household
+  - username: jake.joe
+    household_owner:
+      - Another Household

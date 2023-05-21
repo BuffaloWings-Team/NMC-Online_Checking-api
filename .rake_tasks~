@@ -1,0 +1,12 @@
+api_spec
+audit
+console
+db:delete
+db:drop
+db:dropAll
+db:migrate
+db:seed
+release?
+spec
+style
+newkey:db

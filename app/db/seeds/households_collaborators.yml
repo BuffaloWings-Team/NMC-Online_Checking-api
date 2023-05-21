@@ -1,0 +1,8 @@
+---
+  - household_owner: Test Household
+    collaborator_email:
+      - 11100023@nthu.edu.tw
+      - chatgptisthebest@gmail.com
+  - household_owner: Another Household
+    collaborator_email:
+      - jpoop@nthu.edu.tw
