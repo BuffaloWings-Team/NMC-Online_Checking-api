@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
+ruby File.read('.ruby-version').strip
 
 # Web API
 gem 'json'
@@ -19,8 +20,9 @@ gem 'rbnacl', '~>7.1'
 gem 'hirb'
 gem 'sequel', '~>5.55'
 
-# Performance
-gem 'rubocop-performance'
+group :production do
+  gem 'pg'
+end
 
 group :production do 
   gem 'pg'
@@ -32,10 +34,14 @@ group :test do
   gem 'minitest-rg'
 end
 
+# Debugging
+gem 'pry'
+
 # Development
 group :development do
-  gem 'pry'
   gem 'rerun'
+
+  # Quality
   gem 'rubocop'
   gem 'rubocop-performance'
 end

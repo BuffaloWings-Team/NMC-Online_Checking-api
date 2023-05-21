@@ -18,7 +18,6 @@ module OnlineCheckIn
     def self.call(credentials)
       account = Account.first(username: credentials[:username])
       account.password?(credentials[:password]) ? account : raise
- 
     rescue StandardError
       raise UnauthorizedError, credentials
     end
