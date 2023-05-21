@@ -22,6 +22,10 @@ gem 'sequel', '~>5.55'
 # Performance
 gem 'rubocop-performance'
 
+group :production do 
+  gem 'pg'
+end
+
 # Testing
 group :test do
   gem 'minitest'
@@ -44,3 +48,4 @@ end
 
 # Quality
 gem 'rubocop'
+
