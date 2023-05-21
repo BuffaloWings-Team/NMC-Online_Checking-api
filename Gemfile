@@ -20,9 +20,6 @@ gem 'rbnacl', '~>7.1'
 gem 'hirb'
 gem 'sequel', '~>5.55'
 
-group :production do
-  gem 'pg'
-end
 
 group :production do 
   gem 'pg'
