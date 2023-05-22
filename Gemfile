@@ -5,23 +5,22 @@ ruby File.read('.ruby-version').strip
 
 # Web API
 gem 'json'
-gem 'puma', '~>5.6'
+gem 'puma', '~>6.2'
 gem 'roda', '~>3.54'
 
 # Configuration
-gem 'figaro'
-gem 'rake'
+gem 'figaro', '~>1.2'
+gem 'rake', '~>13.0'
 
 # Security
 gem 'bundler-audit'
 gem 'rbnacl', '~>7.1'
 
 # Database
-gem 'hirb'
-gem 'sequel', '~>5.55'
+gem 'hirb', '~>0.7'
+gem 'sequel', '~>5.67'
 
-
-group :production do 
+group :production do
   gem 'pg'
 end
 
@@ -32,7 +31,7 @@ group :test do
 end
 
 # Debugging
-gem 'pry'
+gem 'pry' # necessary for rake console
 
 # Development
 group :development do
@@ -48,7 +47,3 @@ group :development, :test do
   gem 'sequel-seed'
   gem 'sqlite3', '~>1.6'
 end
-
-# Quality
-gem 'rubocop'
-

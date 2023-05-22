@@ -27,7 +27,7 @@ GEM
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    puma (5.6.5)
+    puma (6.2.2)
       nio4r (~> 2.0)
     rack (3.0.7)
     rack-test (2.1.0)
@@ -73,7 +73,6 @@ GEM
     unicode-display_width (2.4.2)
 
 PLATFORMS
-  arm64-darwin-22
   arm64-darwin-21
   arm64-darwin-22
   ruby
@@ -83,22 +82,22 @@ PLATFORMS
 
 DEPENDENCIES
   bundler-audit
-  figaro
-  hirb
+  figaro (~> 1.2)
+  hirb (~> 0.7)
   json
   minitest
   minitest-rg
   pg
   pry
-  puma (~> 5.6)
+  puma (~> 6.2)
   rack-test
-  rake
+  rake (~> 13.0)
   rbnacl (~> 7.1)
   rerun
   roda (~> 3.54)
   rubocop
   rubocop-performance
-  sequel (~> 5.55)
+  sequel (~> 5.67)
   sequel-seed
   sqlite3 (~> 1.6)
 
