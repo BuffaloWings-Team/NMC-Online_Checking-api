@@ -33,9 +33,6 @@ module OnlineCheckIn
           routing.post do
             new_data = JSON.parse(routing.body.read)
 
-            # house = Household.first(id: house_id)
-            # new_member = house.add_member(new_data)
-            # raise 'Could not save member' unless new_member
             new_member = CreateMemberForHousehold.call(
               household_id: house_id, member_data: new_data
             )
@@ -62,11 +59,12 @@ module OnlineCheckIn
       end
 
       # GET api/v1/households
-      routing.get do
-        output = { data: Household.all }
+      account = Account.first(username: @auth_account['username'])
+      households = account.households
+      JSON.pretty_generate(data: households)
         JSON.pretty_generate(output)
       rescue StandardError
-        routing.halt 404, { message: 'Could not find households' }.to_json
+        routing.halt 403, { message: 'Could not find any households' }.to_json
       end
 
       # POST api/v1/households
