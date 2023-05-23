@@ -27,7 +27,7 @@ module OnlineCheckIn
       end
 
       routing.root do
-        { message: 'CredenceAPI up at /api/v1' }.to_json
+        { message: 'OnlineCheckInAPI up at /api/v1' }.to_json
       end
 
       routing.on 'api' do
