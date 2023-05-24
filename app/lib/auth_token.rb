@@ -52,12 +52,6 @@ class AuthToken
     AuthToken.new(tokenize(contents))
   end
 
-  # Extract data from token
-  #  def self.payload(token)
-  #      contents = detokenize(token)
-  #      expired?(contents) ? raise(ExpiredTokenError) : contents['payload']
-  #  end
-
   def self.expires(expiration)
     (Time.now + expiration).to_i
   end

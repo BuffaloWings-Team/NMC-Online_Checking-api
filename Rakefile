@@ -47,26 +47,32 @@ task :console => :print_env do
 end
 
 namespace :db do
-  require_app(nil) # load config code files only
-  require 'sequel'
+  task :load do
+    require_app(nil) # load config code files only
+    require 'sequel'
 
-  Sequel.extension :migration
-  app = OnlineCheckIn::Api
+    Sequel.extension :migration
+    @app = OnlineCheckIn::Api
+  end
+
+  task :load_models => :load do
+    require_app(%w[lib models services])
+  end
 
   desc 'Run migrations'
   task :migrate => :print_env do
     puts 'Migrating database to latest'
-    Sequel::Migrator.run(app.DB, 'app/db/migrations')
+    Sequel::Migrator.run(@app.DB, 'app/db/migrations')
   end
 
-  desc 'Deletes the database'
-  task :delete do
+  desc 'Destroy data in database; maintain tables'
+  task :delete => :load do
     OnlineCheckIn::Account.dataset.destroy
   end
 
   desc 'Delete dev or test database file'
-  task :drop do
-    if app.environment == :production
+  task :drop => :load do
+    if @app.environment == :production
       puts 'Cannot wipe production database!'
       return
     end
@@ -76,9 +82,14 @@ namespace :db do
     puts "Deleted #{db_filename}"
   end
 
+  task :reset_seeds => :load_models do
+    @app.DB[:schema_seeds].delete if @app.DB.tables.include?(:schema_seeds)
+    OnlineCheckIn::Account.dataset.destroy
+  end
+
   desc 'Delete all database file'
   task :dropAll do
-    if app.environment == :production
+    if @app.environment == :production
       puts 'Cannot wipe production database!'
       return
     end
@@ -86,21 +97,12 @@ namespace :db do
     puts 'Deleted all the db files'
   end
 
-  task :load_models do
-    require_app(%w[lib models services])
-  end
-
-  task :reset_seeds => [:load_models] do
-    app.DB[:schema_seeds].delete if app.DB.tables.include?(:schema_seeds)
-    OnlineCheckIn::Account.dataset.destroy
-  end
-
   desc 'Seeds the development database'
-  task :seed => [:load_models] do
+  task :seed => :load_models do
     require 'sequel/extensions/seed'
     Sequel::Seed.setup(:development)
     Sequel.extension :seed
-    Sequel::Seeder.apply(app.DB, 'app/db/seeds')
+    Sequel::Seeder.apply(@app.DB, 'app/db/seeds')
   end
 
   desc 'Delete all data and reseed'
@@ -112,6 +114,12 @@ namespace :newkey do
   task :db do
     require_app('lib')
     puts "DB_KEY: #{SecureDB.generate_key}"
+  end
+
+  desc 'Create sample cryptographic key for tokens and messaging'
+  task :msg do
+    require_app('lib')
+    puts "MSG_KEY: #{AuthToken.generate_key}"
   end
 end
 

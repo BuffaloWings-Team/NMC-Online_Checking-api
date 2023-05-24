@@ -10,15 +10,36 @@ describe 'Test Household Handling' do
   end
 
   describe 'Getting households' do
-    it 'HAPPY: should be able to get list of all households' do
-      OnlineCheckIn::Household.create(DATA[:households][0])
-      OnlineCheckIn::Household.create(DATA[:households][1])
+    describe 'Getting list of households' do
+      before do
+        @account_data = DATA[:accounts][0]
+        account = OnlineCheckIn::Account.create(@account_data)
+        account.add_owned_household(DATA[:households][0])
+        account.add_owned_household(DATA[:households][1])
+      end
 
-      get 'api/v1/households'
-      _(last_response.status).must_equal 200
+      it 'HAPPY: should get list for authorized account' do
+        auth = OnlineCheckIn::AuthenticateAccount.call(
+          username: @account_data['username'],
+          password: @account_data['password']
+        )
 
-      result = JSON.parse last_response.body
-      _(result['data'].count).must_equal 2
+        header 'AUTHORIZATION', "Bearer #{auth[:attributes][:auth_token]}"
+        get 'api/v1/households'
+        _(last_response.status).must_equal 200
+
+        result = JSON.parse last_response.body
+        _(result['data'].count).must_equal 2
+      end
+
+      it 'BAD: should not process for unauthorized account' do
+        header 'AUTHORIZATION', 'Bearer bad_token'
+        get 'api/v1/households'
+        _(last_response.status).must_equal 403
+
+        result = JSON.parse last_response.body
+        _(result['data']).must_be_nil
+      end
     end
 
     it 'HAPPY: should be able to get details of a single household' do

@@ -7,10 +7,12 @@ API to store and retrieve confidential development files (configuration, credent
 All routes return Json
 
 - GET  `/`: Root route shows if Web API is running
-- GET  `api/v1/households/[house_id]/documents/[doc_id]`: Get a document
-- GET  `api/v1/households/[house_id]/documents`: Get list of documents for household
-- POST `api/v1/households/[ID]/documents`: Upload document for a household
-- GET  `api/v1/households/[ID]`: Get information about a household
+- GET  `api/v1/accounts/[username]`: Get account details
+- POST  `api/v1/accounts`: Create a new account
+- GET  `api/v1/households/[house_id]/members/[member_id]`: Get a member
+- GET  `api/v1/households/[house_id]/members`: Get list of members for household
+- POST `api/v1/households/[house_id]/members`: Upload member for a household
+- GET  `api/v1/households/[house_id]`: Get information about a household
 - GET  `api/v1/households`: Get list of all household
 - POST `api/v1/households`: Create new household
 
@@ -28,12 +30,42 @@ Setup development database once:
 rake db:migrate
 ```
 
-## Execute
+## Test
 
-Run this API using:
+Setup test database once:
 
 ```shell
-puma
+RACK_ENV=test rake db:migrate
+```
+
+Run the test specification script in `Rakefile`:
+
+```shell
+rake spec
+```
+
+## Develop/Debug
+
+Add fake data to the development database to work on this project:
+
+```shell
+rake db:seed
+```
+
+## Execute
+
+Launch the API using:
+
+```shell
+rake run:dev
+```
+
+## Release check
+
+Before submitting pull requests, please check if specs, style, and dependency audits pass (will need to be online to update dependency database):
+
+```shell
+rake release?
 ```
 
 ## Test
@@ -49,6 +81,7 @@ Run the test specification script in `Rakefile`:
 ```shell
 rake spec
 ```
+
 ## Develop/Debug
 
 Add fake data to the development database to work on this project:
@@ -56,16 +89,18 @@ Add fake data to the development database to work on this project:
 ```shell
 rake db:seed
 ```
+
 ## Execute
 
 Launch the API using:
 
 ```shell
-puma
+rackup
 ```
+
 ## Release check
 
-Before submitting pull requests, please check if specs, style, and dependency audits pass:
+Before submitting pull requests, please check if specs, style, and dependency audits pass (will need to be online to update dependency database):
 
 ```shell
 rake release?
