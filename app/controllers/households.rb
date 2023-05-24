@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'roda'
-require 'json'
+require_relative './app'
 
 module OnlineCheckIn
   # Web controller for OnlineCheckIn API
@@ -58,7 +58,7 @@ module OnlineCheckIn
         end
       end
 
-      # GET api/v1/households
+      # GET api/v1/households/
       account = Account.first(username: @auth_account['username'])
       households = account.households
       JSON.pretty_generate(data: households)

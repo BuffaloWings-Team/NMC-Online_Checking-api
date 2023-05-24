@@ -9,7 +9,7 @@ module OnlineCheckIn
     end
 
     def self.call(email:, household_id:)
-      collaborator = Account.first(email: email)
+      collaborator = Account.first(email:)
       household = Household.first(id: household_id)
       raise(OwnerNotCollaboratorError) if household.owner.id == collaborator.id
 
