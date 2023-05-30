@@ -63,7 +63,6 @@ module OnlineCheckIn
         account = Account.first(username: @auth_account['username'])
         households = account.households
         JSON.pretty_generate(data: households)
-        JSON.pretty_generate(output)
       rescue StandardError
         routing.halt 403, { message: 'Could not find any households' }.to_json
       end

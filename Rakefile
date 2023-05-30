@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
+# rubocop:disable Style/HashSyntax, Style/SymbolArray, Metrics/BlockLength
 require 'rake/testtask'
 require './require_app'
 
-# rubocop:disable Style/HashSyntax, Style/SymbolArray
 task :default => :spec
 
 desc 'Tests API specs only'
@@ -38,7 +38,7 @@ task :release? => [:spec, :style, :audit] do
 end
 
 task :print_env do
-  puts "Environment: #{ENV['RACK_ENV'] || 'development'}"
+  puts "Environment: #{ENV.fetch('RACK_ENV', nil) || 'development'}"
 end
 
 desc 'Run application console (pry)'
@@ -48,7 +48,7 @@ end
 
 namespace :db do
   task :load do
-    require_app(nil) # load config code files only
+    require_app(nil) # loads config code files only
     require 'sequel'
 
     Sequel.extension :migration
@@ -60,7 +60,7 @@ namespace :db do
   end
 
   desc 'Run migrations'
-  task :migrate => :print_env do
+  task :migrate => [:load, :print_env] do
     puts 'Migrating database to latest'
     Sequel::Migrator.run(@app.DB, 'app/db/migrations')
   end
@@ -85,16 +85,6 @@ namespace :db do
   task :reset_seeds => :load_models do
     @app.DB[:schema_seeds].delete if @app.DB.tables.include?(:schema_seeds)
     OnlineCheckIn::Account.dataset.destroy
-  end
-
-  desc 'Delete all database file'
-  task :dropAll do
-    if @app.environment == :production
-      puts 'Cannot wipe production database!'
-      return
-    end
-    Dir.glob('app/db/store/*.db').each { |filename| FileUtils.rm(filename) }
-    puts 'Deleted all the db files'
   end
 
   desc 'Seeds the development database'
@@ -130,4 +120,4 @@ namespace :run do
     sh 'puma -p 3000'
   end
 end
-# rubocop:enable Style/HashSyntax, Style/SymbolArray
+# rubocop:enable Style/HashSyntax, Style/SymbolArray, Metrics/BlockLength
