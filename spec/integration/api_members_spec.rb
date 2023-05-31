@@ -17,7 +17,7 @@ describe 'Test Member Handling' do
     OnlineCheckIn::Account.create(@wrong_account_data)
 
     header 'CONTENT_TYPE', 'application/json'
-    end
+  end
 
   describe 'Getting a single members' do
     it 'HAPPY: should be able to get details of a single member' do
@@ -27,9 +27,9 @@ describe 'Test Member Handling' do
 
       header 'AUTHORIZATION', auth_header(@account_data)
       get "/api/v1/members/#{doc.id}"
-    _(last_response.status).must_equal 200
+      _(last_response.status).must_equal 200
 
-    result = JSON.parse(last_response.body)['data']
+      result = JSON.parse(last_response.body)['data']
       _(result['attributes']['id']).must_equal doc.id
       _(result['attributes']['filename']).must_equal doc_data['filename']
     end
@@ -45,7 +45,7 @@ describe 'Test Member Handling' do
 
       _(last_response.status).must_equal 403
       _(result['attributes']).must_be_nil
-  end
+    end
 
     it 'BAD AUTHORIZATION: should not get details with wrong authorization' do
       doc_data = DATA[:members][0]
@@ -55,18 +55,18 @@ describe 'Test Member Handling' do
       header 'AUTHORIZATION', auth_header(@wrong_account_data)
       get "/api/v1/members/#{doc.id}"
 
-    result = JSON.parse last_response.body
+      result = JSON.parse last_response.body
 
       _(last_response.status).must_equal 403
       _(result['attributes']).must_be_nil
-  end
+    end
 
     it 'SAD: should return error if member does not exist' do
       header 'AUTHORIZATION', auth_header(@account_data)
       get '/api/v1/members/foobar'
 
-    _(last_response.status).must_equal 404
-  end
+      _(last_response.status).must_equal 404
+    end
   end
 
   describe 'Creating Members' do
@@ -82,7 +82,7 @@ describe 'Test Member Handling' do
       _(last_response.headers['Location'].size).must_be :>, 0
 
       created = JSON.parse(last_response.body)['data']['attributes']
-      member = OnlineCheckIn::Member.first
+      OnlineCheckIn::Member.first
 
       _(created['id']).must_equal doc.id
       _(created['filename']).must_equal @doc_data['filename']

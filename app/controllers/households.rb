@@ -33,21 +33,21 @@ module OnlineCheckIn
 
           # POST api/v1/households/[member_id]/members
           routing.post do
-            new_document = CreateDocument.call(
+            new_member = CreateMember.call(
               account: @auth_account,
               household: @req_household,
-              document_data: JSON.parse(routing.body.read)
+              member_data: JSON.parse(routing.body.read)
             )
 
             response.status = 201
-            response['Location'] = "#{@doc_route}/#{new_document.id}"
-            { message: 'Document saved', data: new_document }.to_json
-          rescue CreateDocument::ForbiddenError => e
+            response['Location'] = "#{@doc_route}/#{new_member.id}"
+            { message: 'Member saved', data: new_member }.to_json
+          rescue CreateMember::ForbiddenError => e
             routing.halt 403, { message: e.message }.to_json
-          rescue CreateDocument::IllegalRequestError => e
+          rescue CreateMember::IllegalRequestError => e
             routing.halt 400, { message: e.message }.to_json
           rescue StandardError => e
-            Api.logger.warn "Could not create document: #{e.message}"
+            Api.logger.warn "Could not create member: #{e.message}"
             routing.halt 500, { message: 'API server error' }.to_json
           end
         end
@@ -89,7 +89,7 @@ module OnlineCheckIn
         end
       end
 
-      routing .is do
+      routing.is do
         # GET api/v1/households
       routing.get do
           households = HouseholdPolicy::AccountScope.new(@auth_account).viewable

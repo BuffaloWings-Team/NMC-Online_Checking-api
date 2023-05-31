@@ -13,7 +13,7 @@ module OnlineCheckIn
         # GET api/v1/accounts/[username]
         routing.get do
           account = GetAccountQuery.call(
-            requestor: @auth_account, username: username
+            requestor: @auth_account, username:
           )
           account.to_json
         rescue GetAccountQuery::ForbiddenError => e

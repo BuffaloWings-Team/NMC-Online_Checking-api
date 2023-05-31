@@ -3,10 +3,10 @@
 require 'json'
 require 'sequel'
 
-module Credence
+module OnlineCheckIn
   # Models a project
-  class Project < Sequel::Model
-    many_to_one :owner, class: :'Credence::Account'
+  class Household < Sequel::Model
+    many_to_one :owner, class: :'OnlineCheckIn::Account'
 
     many_to_many :collaborators,
                  class: :'OnlineCheckIn::Account',
@@ -22,31 +22,30 @@ module Credence
     plugin :timestamps
     plugin :whitelist_security
     set_allowed_columns :houseowner, :floorNo, :contact
-    # rubocop:disable Metrics/MethodLength
     def to_h
-        {
-          type: 'household',
-          attributes: {
-            id: id,
-            houseowner: houseowner,
-            floorNo: floorNo,
-            contact: contact
-          }
+      {
+        type: 'household',
+        attributes: {
+          id:,
+          houseowner:,
+          floorNo:,
+          contact:
+        }
       }
     end
-      
+
     def full_details
       to_h.merge(
         relationships: {
           owner:,
           collaborators:,
-          documents:
+          members:
         }
       )
     end
 
     def to_json(options = {})
       JSON(to_h, options)
+    end
   end
-end
 end
