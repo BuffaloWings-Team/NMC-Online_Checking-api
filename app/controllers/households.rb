@@ -8,82 +8,115 @@ module OnlineCheckIn
   class Api < Roda
     # rubocop:disable Metrics/BlockLength
     route('households') do |routing|
-      @house_route = "#{@api_root}/households"
+      unauthorized_message = { message: 'Unauthorized Request' }.to_json
+      routing.halt(403, unauthorized_message) unless @auth_account
 
-      routing.on String do |house_id|
-        routing.on 'members' do
-          @member_route = "#{@api_root}/households/#{house_id}/members"
-          # GET api/v1/households/[house_id]/members/[member_id]
-          routing.get String do |member_id|
-            member = Member.where(household_id: house_id, id: member_id).first
-            member ? member.to_json : raise('Member not found')
-          rescue StandardError => e
-            routing.halt 404, { message: e.message }.to_json
-          end
+      @househ_route = "#{@api_root}/households"
+      routing.on String do |househ_id|
+        @req_household = Household.first(id: household_id)
 
           # GET api/v1/households/[house_id]/members
           routing.get do
-            output = { data: Household.first(id: house_id).members }
-            JSON.pretty_generate(output)
-          rescue StandardError
-            routing.halt 404, message: 'Could not find members'
+          household = GetHouseholdQuery.call(
+            account: @auth_account, household: @req_household
+          )
+
+          { data: household }.to_json
+        rescue GetHouseholdQuery::ForbiddenError => e
+          routing.halt 403, { message: e.message }.to_json
+        rescue GetHouseholdQuery::NotFoundError => e
+          routing.halt 404, { message: e.message }.to_json
+        rescue StandardError => e
+          puts "FIND HOUSEHOLD ERROR: #{e.inspect}"
+          routing.halt 500, { message: 'API server error' }.to_json
           end
 
           # POST api/v1/households/[member_id]/members
           routing.post do
-            new_data = JSON.parse(routing.body.read)
-
-            new_member = CreateMemberForHousehold.call(
-              household_id: house_id, member_data: new_data
+            new_document = CreateDocument.call(
+              account: @auth_account,
+              household: @req_household,
+              document_data: JSON.parse(routing.body.read)
             )
 
             response.status = 201
-            response['Location'] = "#{@member_route}/#{new_member.id}"
-            { message: 'member saved', data: new_member }.to_json
-          rescue Sequel::MassAssignmentRestriction
-            Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
-            routing.halt 400, { message: 'Illegal Attributes' }.to_json
-          rescue StandardError
-            Api.logger.warn "MASS-ASSIGNMENT: #{e.message}"
-            routing.halt 500, { message: 'Database error' }.to_json
+            response['Location'] = "#{@doc_route}/#{new_document.id}"
+            { message: 'Document saved', data: new_document }.to_json
+          rescue CreateDocument::ForbiddenError => e
+            routing.halt 403, { message: e.message }.to_json
+          rescue CreateDocument::IllegalRequestError => e
+            routing.halt 400, { message: e.message }.to_json
+          rescue StandardError => e
+            Api.logger.warn "Could not create document: #{e.message}"
+            routing.halt 500, { message: 'API server error' }.to_json
           end
         end
 
-        # GET api/v1/households/[house_id]
-        routing.get do
-          house = Household.first(id: house_id)
-          house ? house.to_json : raise('Household not found')
-        rescue StandardError => e
-          routing.halt 404, { message: e.message }.to_json
+        routing.on('collaborators') do
+          # PUT api/v1/households/[househ_id]/collaborators
+          routing.put do
+            req_data = JSON.parse(routing.body.read)
+
+            collaborator = AddCollaborator.call(
+              account: @auth_account,
+              household: @req_household,
+              collab_email: req_data['email']
+            )
+
+            { data: collaborator }.to_json
+          rescue AddCollaborator::ForbiddenError => e
+            routing.halt 403, { message: e.message }.to_json
+          rescue StandardError
+            routing.halt 500, { message: 'API server error' }.to_json
+          end
+
+          # DELETE api/v1/households/[househ_id]/collaborators
+          routing.delete do
+            req_data = JSON.parse(routing.body.read)
+            collaborator = RemoveCollaborator.call(
+              req_username: @auth_account.username,
+              collab_email: req_data['email'],
+              household_id: househ_id
+            )
+
+            { message: "#{collaborator.username} removed from household",
+              data: collaborator }.to_json
+          rescue RemoveCollaborator::ForbiddenError => e
+            routing.halt 403, { message: e.message }.to_json
+          rescue StandardError
+            routing.halt 500, { message: 'API server error' }.to_json
+          end
         end
       end
 
-      # GET api/v1/households/
+      routing .is do
+        # GET api/v1/households
       routing.get do
-        account = Account.first(username: @auth_account['username'])
-        households = account.households
-        JSON.pretty_generate(data: households)
+          households = HouseholdPolicy::AccountScope.new(@auth_account).viewable
+
+          JSON.pretty_generate(data: households)
       rescue StandardError
-        routing.halt 403, { message: 'Could not find any households' }.to_json
+          routing.halt 403, { message: 'Could not find any households' }.to_json
       end
 
-      # POST api/v1/households
+        # POST api/v1/households
       routing.post do
         new_data = JSON.parse(routing.body.read)
-        new_house = Household.new(new_data)
-        raise('Could not save household') unless new_house.save
+          new_househ = @auth_account.add_owned_household(new_data)
 
         response.status = 201
-        response['Location'] = "#{@house_route}/#{new_house.id}"
-        { message: 'Household saved', data: new_house }.to_json
+          response['Location'] = "#{@househ_route}/#{new_househ.id}"
+          { message: 'Household saved', data: new_househ }.to_json
       rescue Sequel::MassAssignmentRestriction
         Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
-        routing.halt 400, { message: 'Illegal Attributes' }.to_json
-      rescue StandardError => e
-        Api.logger.error "UNKOWN ERROR: #{e.message}"
-        routing.halt 500, { message: 'Unknown server error' }.to_json
+          routing.halt 400, { message: 'Illegal Request' }.to_json
+        rescue StandardError
+          Api.logger.error "Unknown error: #{e.message}"
+          routing.halt 500, { message: 'API server error' }.to_json
+        end
       end
     end
     # rubocop:enable Metrics/BlockLength
   end
 end
+# rubocop:enable Metrics/BlockLength

@@ -11,7 +11,8 @@ module OnlineCheckIn
     many_to_one :household
 
     plugin :uuid, field: :id
-    plugin :timestamps
+    plugin :timestamps, update_on_create: true
+
     plugin :whitelist_security
     set_allowed_columns :first_name, :last_name, :dob
 
@@ -22,6 +23,14 @@ module OnlineCheckIn
 
     def dob=(plaintext)
       self.dob_secure = SecureDB.encrypt(plaintext)
+    end
+
+    def content
+      SecureDB.decrypt(content_secure)
+    end
+
+    def content=(plaintext)
+      self.content_secure = SecureDB.encrypt(plaintext)
     end
 
     # rubocop:disable Metrics/MethodLength

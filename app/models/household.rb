@@ -3,12 +3,10 @@
 require 'json'
 require 'sequel'
 
-# rubocop:disable Style/HashSyntax
-
-module OnlineCheckIn
-  # Models a household
-  class Household < Sequel::Model
-    many_to_one :owner, class: :'OnlineCheckIn::Account'
+module Credence
+  # Models a project
+  class Project < Sequel::Model
+    many_to_one :owner, class: :'Credence::Account'
 
     many_to_many :collaborators,
                  class: :'OnlineCheckIn::Account',
@@ -25,8 +23,7 @@ module OnlineCheckIn
     plugin :whitelist_security
     set_allowed_columns :houseowner, :floorNo, :contact
     # rubocop:disable Metrics/MethodLength
-    def to_json(options = {})
-      JSON(
+    def to_h
         {
           type: 'household',
           attributes: {
@@ -35,10 +32,21 @@ module OnlineCheckIn
             floorNo: floorNo,
             contact: contact
           }
-        }, options
+      }
+    end
+      
+    def full_details
+      to_h.merge(
+        relationships: {
+          owner:,
+          collaborators:,
+          documents:
+        }
       )
     end
-    # rubocop:enable Metrics/MethodLength
+
+    def to_json(options = {})
+      JSON(to_h, options)
   end
 end
-# rubocop:enable Style/HashSyntax
+end
