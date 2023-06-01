@@ -38,11 +38,13 @@ module OnlineCheckIn
         plugin :common_logger, $stdout
       end
 
+      # Custom events logging
       LOGGER = Logger.new($stderr)
       def self.logger
         LOGGER
       end
 
+      # Load crypto keys
       SecureDB.setup(ENV.delete('DB_KEY')) # Load crypto key
       AuthToken.setup(ENV.fetch('MSG_KEY')) # Load crypto key
     end

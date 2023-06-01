@@ -14,13 +14,13 @@ describe 'Test AddCollaboratorToHousehold service' do
 
     @owner = OnlineCheckIn::Account.all[0]
     @collaborator = OnlineCheckIn::Account.all[1]
-    @household = OnlineCheckIn::CreateHouseholdForOwner.call(
+    @household = OnlineCheckIn::CreateHousehold.call(
       owner_id: @owner.id, household_data:
     )
   end
 
   it 'HAPPY: should be able to add a collaborator to a household' do
-    OnlineCheckIn::AddCollaboratorToHousehold.call(
+    OnlineCheckIn::AddCollaborator.call(
       email: @collaborator.email,
       household_id: @household.id
     )
@@ -31,10 +31,10 @@ describe 'Test AddCollaboratorToHousehold service' do
 
   it 'BAD: should not add owner as a collaborator' do
     _(proc {
-      OnlineCheckIn::AddCollaboratorToHousehold.call(
+      OnlineCheckIn::AddCollaborator.call(
         email: @owner.email,
         household_id: @household.id
       )
-    }).must_raise OnlineCheckIn::AddCollaboratorToHousehold::OwnerNotCollaboratorError
+    }).must_raise OnlineCheckIn::AddCollaborator::OwnerNotCollaboratorError
   end
 end
