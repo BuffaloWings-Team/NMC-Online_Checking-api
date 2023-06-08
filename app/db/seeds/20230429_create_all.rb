@@ -43,7 +43,7 @@ def create_members
     member_info = member_info_each.next
     household = households_cycle.next
     OnlineCheckIn::CreateMemberForHousehold.call(
-      household_id: household.id, member_data: member_info
+      accout: house.owner, household: household, member_data: member_info
     )
   end
 end
@@ -54,8 +54,7 @@ def add_collaborators
     household = OnlineCheckIn::Household.first(houseowner: contrib['household_owner'])
     contrib['collaborator_email'].each do |email|
       OnlineCheckIn::AddCollaboratorToHousehold.call(
-        email:, household_id: household.id
-      )
+        account: account, household: household, collab_email: email)
     end
   end
 end

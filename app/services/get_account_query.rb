@@ -11,7 +11,7 @@ module OnlineCheckIn
     end
 
     def self.call(requestor:, username:)
-      account = Account.first(username:)
+      account = Account.first(username: username)
 
       policy = AccountPolicy.new(requestor, account)
       policy.can_view? ? account : raise(ForbiddenError)

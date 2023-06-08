@@ -21,25 +21,26 @@ describe 'Test Member Handling' do
 
   describe 'Getting a single members' do
     it 'HAPPY: should be able to get details of a single member' do
-      doc_data = DATA[:members][0]
+      member_data = DATA[:members][0]
       househ = @account.households.first
-      doc = househ.add_document(doc_data)
+      member = househ.add_member(member_data)
 
       header 'AUTHORIZATION', auth_header(@account_data)
-      get "/api/v1/members/#{doc.id}"
+      get "/api/v1/members/#{member.id}"
       _(last_response.status).must_equal 200
 
       result = JSON.parse(last_response.body)['data']
-      _(result['attributes']['id']).must_equal doc.id
-      _(result['attributes']['filename']).must_equal doc_data['filename']
+      _(result['attributes']['id']).must_equal member.id
+      _(result['attributes']['first_name']).must_equal member_data['first_name']
+      _(result['attributes']['last_name']).must_equal member_data['last_name']
     end
 
     it 'SAD AUTHORIZATION: should not get details without authorization' do
-      doc_data = DATA[:members][1]
+      member_data = DATA[:members][1]
       househ = OnlineCheckIn::Household.first
-      doc = househ.add_member(doc_data)
+      member = househ.add_member(member_data)
 
-      get "/api/v1/members/#{doc.id}"
+      get "/api/v1/members/#{member.id}"
 
       result = JSON.parse last_response.body
 
@@ -48,12 +49,12 @@ describe 'Test Member Handling' do
     end
 
     it 'BAD AUTHORIZATION: should not get details with wrong authorization' do
-      doc_data = DATA[:members][0]
+      member_data = DATA[:members][0]
       househ = @account.households.first
-      doc = househ.add_member(doc_data)
+      member = househ.add_member(member_data)
 
       header 'AUTHORIZATION', auth_header(@wrong_account_data)
-      get "/api/v1/members/#{doc.id}"
+      get "/api/v1/members/#{member.id}"
 
       result = JSON.parse last_response.body
 
@@ -72,26 +73,27 @@ describe 'Test Member Handling' do
   describe 'Creating Members' do
     before do
       @househ = OnlineCheckIn::Household.first
-      @doc_data = DATA[:members][1]
+      @member_data = DATA[:members][1]
     end
 
     it 'HAPPY: should be able to create when everything correct' do
       header 'AUTHORIZATION', auth_header(@account_data)
-      post "api/v1/households/#{@househ.id}/members", @doc_data.to_json
+      post "api/v1/households/#{@househ.id}/members", @member_data.to_json
       _(last_response.status).must_equal 201
       _(last_response.headers['Location'].size).must_be :>, 0
 
       created = JSON.parse(last_response.body)['data']['attributes']
       OnlineCheckIn::Member.first
 
-      _(created['id']).must_equal doc.id
-      _(created['filename']).must_equal @doc_data['filename']
-      _(created['description']).must_equal @doc_data['description']
+      _(created['id']).must_equal member.id
+      _(created['first_name']).must_equal @member_data['first_name']
+      _(created['last_name']).must_equal @member_data['last_name']
+      _(created['dob']).must_equal @member_data['dob']
     end
 
     it 'BAD AUTHORIZATION: should not create with incorrect authorization' do
       header 'AUTHORIZATION', auth_header(@wrong_account_data)
-      post "api/v1/households/#{@househ.id}/members", @doc_data.to_json
+      post "api/v1/households/#{@househ.id}/members", @member_data.to_json
 
       data = JSON.parse(last_response.body)['data']
 
@@ -101,7 +103,7 @@ describe 'Test Member Handling' do
     end
 
     it 'SAD AUTHORIZATION: should not create without any authorization' do
-      post "api/v1/households/#{@househ.id}/members", @doc_data.to_json
+      post "api/v1/households/#{@househ.id}/members", @member_data.to_json
 
       data = JSON.parse(last_response.body)['data']
 
@@ -111,7 +113,7 @@ describe 'Test Member Handling' do
     end
 
     it 'BAD VULNERABILITY: should not create with mass assignment' do
-      bad_data = @doc_data.clone
+      bad_data = @member_data.clone
       bad_data['created_at'] = '1900-01-01'
       header 'AUTHORIZATION', auth_header(@account_data)
       post "api/v1/households/#{@househ.id}/members", bad_data.to_json

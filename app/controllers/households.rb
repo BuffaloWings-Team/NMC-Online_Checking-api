@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'roda'
 require_relative './app'
 
+# rubocop:disable Metrics/BlockLength
 module OnlineCheckIn
   # Web controller for OnlineCheckIn API
   class Api < Roda
@@ -13,10 +13,10 @@ module OnlineCheckIn
 
       @househ_route = "#{@api_root}/households"
       routing.on String do |househ_id|
-        @req_household = Household.first(id: household_id)
+        @req_household = Household.first(id: househ_id)
 
-          # GET api/v1/households/[house_id]/members
-          routing.get do
+        # GET api/v1/households/[house_id]/members
+        routing.get do
           household = GetHouseholdQuery.call(
             account: @auth_account, household: @req_household
           )
@@ -29,9 +29,10 @@ module OnlineCheckIn
         rescue StandardError => e
           puts "FIND HOUSEHOLD ERROR: #{e.inspect}"
           routing.halt 500, { message: 'API server error' }.to_json
-          end
+        end
 
-          # POST api/v1/households/[member_id]/members
+        routing.on('members') do
+          # POST api/v1/households/[househ_id]/members
           routing.post do
             new_member = CreateMember.call(
               account: @auth_account,
@@ -40,7 +41,7 @@ module OnlineCheckIn
             )
 
             response.status = 201
-            response['Location'] = "#{@doc_route}/#{new_member.id}"
+            response['Location'] = "#{@member_route}/#{new_member.id}"
             { message: 'Member saved', data: new_member }.to_json
           rescue CreateMember::ForbiddenError => e
             routing.halt 403, { message: e.message }.to_json
@@ -91,24 +92,24 @@ module OnlineCheckIn
 
       routing.is do
         # GET api/v1/households
-      routing.get do
+        routing.get do
           households = HouseholdPolicy::AccountScope.new(@auth_account).viewable
 
           JSON.pretty_generate(data: households)
-      rescue StandardError
+        rescue StandardError
           routing.halt 403, { message: 'Could not find any households' }.to_json
-      end
+        end
 
         # POST api/v1/households
-      routing.post do
-        new_data = JSON.parse(routing.body.read)
+        routing.post do
+          new_data = JSON.parse(routing.body.read)
           new_househ = @auth_account.add_owned_household(new_data)
 
-        response.status = 201
+          response.status = 201
           response['Location'] = "#{@househ_route}/#{new_househ.id}"
           { message: 'Household saved', data: new_househ }.to_json
-      rescue Sequel::MassAssignmentRestriction
-        Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
+        rescue Sequel::MassAssignmentRestriction
+          Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
           routing.halt 400, { message: 'Illegal Request' }.to_json
         rescue StandardError
           Api.logger.error "Unknown error: #{e.message}"

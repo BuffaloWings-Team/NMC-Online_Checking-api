@@ -51,7 +51,7 @@ describe 'Test Household Handling' do
 
       result = JSON.parse(last_response.body)['data']
       _(result['attributes']['id']).must_equal househ.id
-      _(result['attributes']['name']).must_equal househ.name
+      _(result['attributes']['houseowner']).must_equal househ.houseowner
     end
 
     it 'SAD: should return error if unknown household requested' do
@@ -101,8 +101,7 @@ describe 'Test Household Handling' do
       househ = OnlineCheckIn::Household.first
 
       _(created['id']).must_equal househ.id
-      _(created['name']).must_equal @housh_data['name']
-      _(created['repo_url']).must_equal @househ_data['repo_url']
+      _(created['houseowner']).must_equal @housh_data['houseowner']
     end
 
     it 'SAD: should not create new household without authorization' do

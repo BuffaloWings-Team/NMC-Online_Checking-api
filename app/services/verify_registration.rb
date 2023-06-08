@@ -15,9 +15,11 @@ module OnlineCheckIn
       @registration = registration
     end
 
-    def from_email = ENV.fetch('SENDGRID_FROM_EMAIL', nil)
-    def mail_api_key = ENV.fetch('SENDGRID_API_KEY', nil)
-    def mail_url = ENV.fetch('SENDGRID_API_URL', nil)
+    # rubocop:disable Layout/EmptyLineBetweenDefs
+    def from_email() = ENV['SENDGRID_FROM_EMAIL']
+    def mail_api_key() = ENV['SENDGRID_API_KEY']
+    def mail_url() = ENV['SENDGRID_API_URL']
+    # rubocop:enable Layout/EmptyLineBetweenDefs
 
     def call
       raise(InvalidRegistration, 'Username exists') unless username_available?
@@ -37,7 +39,7 @@ module OnlineCheckIn
     def html_email
       <<~END_EMAIL
         <H1>OnlineCheckIn App Registration Received</H1>
-        <p>Please <a href="#{@registration[:verification_url]}">click here</a>
+        <p>Please <a href=\"#{@registration[:verification_url]}\">click here</a>
         to validate your email.
         You will be asked to set a password to activate your account.</p>
       END_EMAIL
@@ -49,7 +51,7 @@ module OnlineCheckIn
           to: [{ 'email' => @registration[:email] }]
         }],
         from: { 'email' => from_email },
-        subject: 'Household Registration Verification',
+        subject: 'Credent Registration Verification',
         content: [
           { type: 'text/html',
             value: html_email }
@@ -57,8 +59,6 @@ module OnlineCheckIn
       }
     end
 
-    # Bearer Auth Http Request. Authorization: Bearer <credentials>
-    # mail_api_key is used with the user mail api key
     def send_email_verification
       res = HTTP.auth("Bearer #{mail_api_key}")
                 .post(mail_url, json: mail_json)

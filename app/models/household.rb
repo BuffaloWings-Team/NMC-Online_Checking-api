@@ -22,6 +22,7 @@ module OnlineCheckIn
     plugin :timestamps
     plugin :whitelist_security
     set_allowed_columns :houseowner, :floorNo, :contact
+    
     def to_h
       {
         type: 'household',
