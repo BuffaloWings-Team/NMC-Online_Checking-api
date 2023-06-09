@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 module OnlineCheckIn
-  # Add a collaborator to another owner's existing project
+  # Add a collaborator to another owner's existing household
   class GetAccountQuery
     # Error if requesting to see forbidden account
     class ForbiddenError < StandardError
       def message
-        'You are not allowed to access that project'
+        'You are not allowed to access that household'
       end
     end
 

@@ -4,7 +4,7 @@ require 'json'
 require 'sequel'
 
 module OnlineCheckIn
-  # Models a project
+  # Models a household
   class Household < Sequel::Model
     many_to_one :owner, class: :'OnlineCheckIn::Account'
 
@@ -22,7 +22,7 @@ module OnlineCheckIn
     plugin :timestamps
     plugin :whitelist_security
     set_allowed_columns :houseowner, :floorNo, :contact
-    
+
     def to_h
       {
         type: 'household',

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module OnlineCheckIn
-  # Add a collaborator to another owner's existing project
+  # Add a collaborator to another owner's existing household
   class GetMemberQuery
     # Error for owner cannot be collaborator
     class ForbiddenError < StandardError
@@ -10,7 +10,7 @@ module OnlineCheckIn
       end
     end
 
-    # Error for cannot find a project
+    # Error for cannot find a household
     class NotFoundError < StandardError
       def message
         'We could not find that member'
@@ -21,7 +21,7 @@ module OnlineCheckIn
     def self.call(requestor:, member:)
       raise NotFoundError unless member
 
-      policy = MemeberPolicy.new(requestor, member)
+      policy = MemberPolicy.new(requestor, member)
       raise ForbiddenError unless policy.can_view?
 
       member

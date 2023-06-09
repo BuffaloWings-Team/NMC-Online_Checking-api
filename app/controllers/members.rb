@@ -6,9 +6,7 @@ module OnlineCheckIn
   # Web controller for OnlineCheckIn API
   class Api < Roda
     route('members') do |routing|
-      unless @auth_account
-        routing.halt 403, { message: 'Not authorized' }.to_json
-      end
+      routing.halt 403, { message: 'Not authorized' }.to_json unless @auth_account
 
       @member_route = "#{@api_root}/members"
 

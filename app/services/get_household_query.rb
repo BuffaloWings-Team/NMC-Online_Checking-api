@@ -23,7 +23,7 @@ module OnlineCheckIn
       policy = HouseholdPolicy.new(account, household)
       raise ForbiddenError unless policy.can_view?
 
-      project.full_details.merge(policies: policy.summary)
+      household.full_details.merge(policies: policy.summary)
     end
   end
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module OnlineCheckIn
-  # Add a collaborator to another owner's existing project
+  # Add a collaborator to another owner's existing household
   class CreateMember
     # Error for owner cannot be collaborator
     class ForbiddenError < StandardError

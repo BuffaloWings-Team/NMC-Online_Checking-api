@@ -2,7 +2,7 @@
 
 require_relative '../spec_helper'
 
-describe 'Test AddCollaboratorToHousehold service' do
+describe 'Test AddCollaborator service' do
   before do
     wipe_database
 
@@ -14,15 +14,16 @@ describe 'Test AddCollaboratorToHousehold service' do
 
     @owner = OnlineCheckIn::Account.all[0]
     @collaborator = OnlineCheckIn::Account.all[1]
-    @household = OnlineCheckIn::CreateHousehold.call(
+    @household = OnlineCheckIn::CreateHouseholdForOwner.call(
       owner_id: @owner.id, household_data:
     )
   end
 
   it 'HAPPY: should be able to add a collaborator to a household' do
     OnlineCheckIn::AddCollaborator.call(
-      email: @collaborator.email,
-      household_id: @household.id
+      account: @owner,
+      household_id: @household,
+      email: @collaborator.email
     )
 
     _(@collaborator.households.count).must_equal 1
@@ -32,9 +33,10 @@ describe 'Test AddCollaboratorToHousehold service' do
   it 'BAD: should not add owner as a collaborator' do
     _(proc {
       OnlineCheckIn::AddCollaborator.call(
-        email: @owner.email,
-        household_id: @household.id
+        account: @owner,
+        household_id: @household,
+        email: @collaborator.email
       )
-    }).must_raise OnlineCheckIn::AddCollaborator::OwnerNotCollaboratorError
+    }).must_raise OnlineCheckIn::AddCollaborator::ForbiddenError
   end
 end
