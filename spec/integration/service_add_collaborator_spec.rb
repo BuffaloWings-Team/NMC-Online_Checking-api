@@ -22,8 +22,8 @@ describe 'Test AddCollaborator service' do
   it 'HAPPY: should be able to add a collaborator to a household' do
     OnlineCheckIn::AddCollaborator.call(
       account: @owner,
-      household_id: @household,
-      email: @collaborator.email
+      household: @household,
+      collab_email: @collaborator.email
     )
 
     _(@collaborator.households.count).must_equal 1
@@ -34,8 +34,8 @@ describe 'Test AddCollaborator service' do
     _(proc {
       OnlineCheckIn::AddCollaborator.call(
         account: @owner,
-        household_id: @household,
-        email: @collaborator.email
+        household: @household,
+        collab_email: @owner.email
       )
     }).must_raise OnlineCheckIn::AddCollaborator::ForbiddenError
   end
