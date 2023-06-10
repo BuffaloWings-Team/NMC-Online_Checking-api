@@ -83,7 +83,7 @@ describe 'Test Member Handling' do
       _(last_response.headers['Location'].size).must_be :>, 0
 
       created = JSON.parse(last_response.body)['data']['attributes']
-      OnlineCheckIn::Member.first
+      member = OnlineCheckIn::Member.first
 
       _(created['id']).must_equal member.id
       _(created['first_name']).must_equal @member_data['first_name']

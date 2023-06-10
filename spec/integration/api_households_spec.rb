@@ -101,7 +101,7 @@ describe 'Test Household Handling' do
       househ = OnlineCheckIn::Household.first
 
       _(created['id']).must_equal househ.id
-      _(created['houseowner']).must_equal @housh_data['houseowner']
+      _(created['houseowner']).must_equal @househ_data['houseowner']
     end
 
     it 'SAD: should not create new household without authorization' do
