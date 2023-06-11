@@ -8,8 +8,7 @@ module OnlineCheckIn
   class Api < Roda
     # rubocop:disable Metrics/BlockLength
     route('households') do |routing|
-      unauthorized_message = { message: 'Unauthorized Request' }.to_json
-      routing.halt(403, unauthorized_message) unless @auth_account
+      routing.halt(403, UNAUTH_MSG) unless @auth_account
 
       @househ_route = "#{@api_root}/households"
       routing.on String do |househ_id|
@@ -17,9 +16,7 @@ module OnlineCheckIn
 
         # GET api/v1/households/[house_id]/members
         routing.get do
-          household = GetHouseholdQuery.call(
-            account: @auth_account, household: @req_household
-          )
+          household = GetHouseholdQuery.call(auth: @auth, household: @req_household)
 
           { data: household }.to_json
         rescue GetHouseholdQuery::ForbiddenError => e
@@ -35,7 +32,7 @@ module OnlineCheckIn
           # POST api/v1/households/[househ_id]/members
           routing.post do
             new_member = CreateMember.call(
-              account: @auth_account,
+              auth: @auth,
               household: @req_household,
               member_data: JSON.parse(routing.body.read)
             )
@@ -59,7 +56,7 @@ module OnlineCheckIn
             req_data = JSON.parse(routing.body.read)
 
             collaborator = AddCollaborator.call(
-              account: @auth_account,
+              auth: @auth,
               household: @req_household,
               collab_email: req_data['email']
             )
@@ -75,7 +72,7 @@ module OnlineCheckIn
           routing.delete do
             req_data = JSON.parse(routing.body.read)
             collaborator = RemoveCollaborator.call(
-              req_username: @auth_account.username,
+              auth: @auth,
               collab_email: req_data['email'],
               household_id: househ_id
             )
@@ -111,6 +108,8 @@ module OnlineCheckIn
         rescue Sequel::MassAssignmentRestriction
           Api.logger.warn "MASS-ASSIGNMENT: #{new_data.keys}"
           routing.halt 400, { message: 'Illegal Request' }.to_json
+        rescue CreateHouseholdForOwner::ForbiddenError => e
+          routing.halt 403, { message: e.message }.to_json
         rescue StandardError
           Api.logger.error "Unknown error: #{e.message}"
           routing.halt 500, { message: 'API server error' }.to_json

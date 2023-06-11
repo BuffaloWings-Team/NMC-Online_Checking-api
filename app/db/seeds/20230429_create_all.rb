@@ -42,8 +42,12 @@ def create_members
   loop do
     member_info = member_info_each.next
     household = households_cycle.next
-    OnlineCheckIn::CreateMemberForHousehold.call(
-      accout: house.owner, household: household, member_data: member_info
+
+    auth_token = AuthToken.create(household.owner)
+    auth = scoped_auth(auth_token)
+   
+    OnlineCheckIn::CreateMember.call(
+      auth: auth, household: household, member_data: member_info
     )
   end
 end
@@ -52,6 +56,10 @@ def add_collaborators
   contrib_info = CONTRIB_INFO
   contrib_info.each do |contrib|
     household = OnlineCheckIn::Household.first(houseowner: contrib['household_owner'])
+
+    auth_token = AuthToken.create(household.owner)
+    auth = scoped_auth(auth_token)
+    
     contrib['collaborator_email'].each do |email|
       OnlineCheckIn::AddCollaboratorToHousehold.call(
         account: account, household: household, collab_email: email)

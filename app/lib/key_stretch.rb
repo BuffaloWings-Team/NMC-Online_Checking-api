@@ -3,7 +3,7 @@
 require 'base64'
 require 'rbnacl'
 
-# Hashes password using key-strethcing hash algorithm
+# Hashes password using key-stretching hash algorithm
 module KeyStretch
   def new_salt
     RbNaCl::Random.random_bytes(RbNaCl::PasswordHash::SCrypt::SALTBYTES)

@@ -10,12 +10,13 @@ module OnlineCheckIn
       end
     end
 
-    def self.call(req_username:, collab_email:, household_id:)
-      account = Account.first(username: req_username)
+    def self.call(auth:, collab_email:, household_id:)
       household = Household.first(id: household_id)
       collaborator = Account.first(email: collab_email)
 
-      policy = CollaborationRequestPolicy.new(household, account, collaborator)
+      policy = CollaborationRequestPolicy.new(
+        household, auth[:account], collaborator, auth[:scope]
+      )
       raise ForbiddenError unless policy.can_remove?
 
       household.remove_collaborator(collaborator)

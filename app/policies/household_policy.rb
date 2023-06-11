@@ -1,24 +1,25 @@
 # frozen_string_literal: true
 
 module OnlineCheckIn
-  # Policy to determine if an account can view a particular household
+  # Policy to determine if an account can view a particular project
   class HouseholdPolicy
-    def initialize(account, household)
+    def initialize(account, household, auth_scope = nil)
       @account = account
       @household = household
+      @auth_scope = auth_scope
     end
 
     def can_view?
-      account_is_owner? || account_is_collaborator?
+      can_read? && (account_is_owner? || account_is_collaborator?)
     end
 
     # duplication is ok!
     def can_edit?
-      account_is_owner? || account_is_collaborator?
+      can_write? && (account_is_owner? || account_is_collaborator?)
     end
 
     def can_delete?
-      account_is_owner?
+      can_write? && account_is_owner?
     end
 
     def can_leave?
@@ -26,26 +27,26 @@ module OnlineCheckIn
     end
 
     def can_add_members?
-      account_is_owner? || account_is_collaborator?
+      can_write? && (account_is_owner? || account_is_collaborator?)
     end
 
     def can_remove_members?
-      account_is_owner? || account_is_collaborator?
+      can_write? && (account_is_owner? || account_is_collaborator?)
     end
 
     def can_add_collaborators?
-      account_is_owner?
+      can_write? && account_is_owner?
     end
 
     def can_remove_collaborators?
-      account_is_owner?
+      can_write? && account_is_owner?
     end
 
     def can_collaborate?
-      !(account_is_owner? or account_is_collaborator?)
+      !(account_is_owner? || account_is_collaborator?)
     end
 
-    def summary
+    def summary # rubocop:disable Metrics/MethodLength
       {
         can_view: can_view?,
         can_edit: can_edit?,
@@ -60,6 +61,14 @@ module OnlineCheckIn
     end
 
     private
+
+    def can_read?
+      @auth_scope ? @auth_scope.can_read?('households') : false
+    end
+
+    def can_write?
+      @auth_scope ? @auth_scope.can_write?('households') : false
+    end
 
     def account_is_owner?
       @household.owner == @account

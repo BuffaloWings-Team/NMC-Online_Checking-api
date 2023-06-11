@@ -13,7 +13,6 @@ module OnlineCheckIn
           reg_data = JSON.parse(request.body.read, symbolize_names: true)
           VerifyRegistration.new(reg_data).call
 
-          # 202 Suggest the start of a process
           response.status = 202
           { message: 'Verification email sent' }.to_json
         rescue VerifyRegistration::InvalidRegistration => e
@@ -34,7 +33,6 @@ module OnlineCheckIn
           auth_account = AuthenticateAccount.call(credentials)
           { data: auth_account }.to_json
         rescue AuthenticateAccount::UnauthorizedError
-          # puts [e.class, e.message].join ': '
           routing.halt '403', { message: 'Invalid credentials' }.to_json
         end
       end

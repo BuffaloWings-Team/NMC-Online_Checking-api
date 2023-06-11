@@ -12,16 +12,17 @@ describe 'Test AddCollaborator service' do
 
     household_data = DATA[:households].first
 
+    @owner_data = DATA[:accounts][0]
     @owner = OnlineCheckIn::Account.all[0]
     @collaborator = OnlineCheckIn::Account.all[1]
-    @household = OnlineCheckIn::CreateHouseholdForOwner.call(
-      owner_id: @owner.id, household_data:
-    )
+    @household = @owner.add_owned_household(household_data)
   end
 
   it 'HAPPY: should be able to add a collaborator to a household' do
+    auth = authorization(@owner_data)
+
     OnlineCheckIn::AddCollaborator.call(
-      account: @owner,
+      auth: auth,
       household: @household,
       collab_email: @collaborator.email
     )
@@ -31,9 +32,14 @@ describe 'Test AddCollaborator service' do
   end
 
   it 'BAD: should not add owner as a collaborator' do
+    auth = OnlineCheckIn::AuthenticateAccount.call(
+      username: @owner_data['username'],
+      password: @owner_data['password']
+    )
+
     _(proc {
       OnlineCheckIn::AddCollaborator.call(
-        account: @owner,
+        auth: auth,
         household: @household,
         collab_email: @owner.email
       )

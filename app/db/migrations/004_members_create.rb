@@ -11,6 +11,7 @@ Sequel.migration do
       String :first_name, null: false
       String :last_name, null: false
       String :dob_secure, null: false
+      String :content_secure, null: false, default: ''
 
       DateTime :created_at
       DateTime :updated_at
