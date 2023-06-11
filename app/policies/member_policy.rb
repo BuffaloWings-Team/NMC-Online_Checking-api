@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# Policy to determine if account can view a household
+# Policy to determine if account can view a project
 class MemberPolicy
-  def initialize(account, member)
+  def initialize(account, member, auth_scope = nil)
     @account = account
     @member = member
     @auth_scope = auth_scope
