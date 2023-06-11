@@ -20,6 +20,7 @@ describe 'Test Member Handling' do
     _(member.first_name).must_equal member_data['first_name']
     _(member.last_name).must_equal member_data['last_name']
     _(member.dob).must_equal member_data['dob']
+
   end
 
   it 'SECURITY: should not use deterministic integers' do
@@ -36,6 +37,6 @@ describe 'Test Member Handling' do
     new_member = house.add_member(member_data)
     stored_member = app.DB[:members].first
 
-    _(stored_doc[:content_secure]).wont_equal new_member.content
+    _(stored_member[:content_secure]).wont_equal new_member.content
   end
 end
