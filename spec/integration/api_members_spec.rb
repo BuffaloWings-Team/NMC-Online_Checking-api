@@ -89,6 +89,7 @@ describe 'Test Member Handling' do
       _(created['first_name']).must_equal @member_data['first_name']
       _(created['last_name']).must_equal @member_data['last_name']
       _(created['dob']).must_equal @member_data['dob']
+
     end
 
     it 'BAD AUTHORIZATION: should not create with incorrect authorization' do

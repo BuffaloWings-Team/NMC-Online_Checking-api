@@ -2,11 +2,9 @@
   - first_name: jake
     last_name: joe
     dob: 1988-0320
-    content: Hello World!
 
 
   - first_name: testname
     last_name: lasttest
     dob: 1982-0402
-    content: Hello World!
     
