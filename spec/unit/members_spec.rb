@@ -20,6 +20,8 @@ describe 'Test Member Handling' do
     _(member.first_name).must_equal member_data['first_name']
     _(member.last_name).must_equal member_data['last_name']
     _(member.dob).must_equal member_data['dob']
+
+
   end
 
   it 'SECURITY: should not use deterministic integers' do
