@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require './app/controllers/helpers.rb'
+include OnlineCheckIn::SecureRequestHelpers
+
 Sequel.seed(:development) do
   def run
     puts 'Seeding accounts, households, members'
@@ -29,9 +32,7 @@ def create_owned_households
     account = OnlineCheckIn::Account.first(username: owner['username'])
     owner['household_owner'].each do |household_owner|
       house_data = HOUSEHOLD_INFO.find { |household| household['houseowner'] == household_owner }
-      OnlineCheckIn::CreateHouseholdForOwner.call(
-        owner_id: account.id, household_data: house_data
-      )
+      account.add_owned_household(house_data)
     end
   end
 end
@@ -45,8 +46,8 @@ def create_members
 
     auth_token = AuthToken.create(household.owner)
     auth = scoped_auth(auth_token)
-   
-    OnlineCheckIn::CreateMember.call(
+
+    OnlineCheckIn::CreateMemberForHousehold.call(
       auth: auth, household: household, member_data: member_info
     )
   end
@@ -56,13 +57,11 @@ def add_collaborators
   contrib_info = CONTRIB_INFO
   contrib_info.each do |contrib|
     household = OnlineCheckIn::Household.first(houseowner: contrib['household_owner'])
-
-    auth_token = AuthToken.create(household.owner)
-    auth = scoped_auth(auth_token)
     
     contrib['collaborator_email'].each do |email|
       OnlineCheckIn::AddCollaboratorToHousehold.call(
-        account: account, household: household, collab_email: email)
+        auth: auth, household: household, collab_email: email
+      )
     end
   end
 end

@@ -4,7 +4,7 @@ require 'roda'
 require_relative './app'
 
 module OnlineCheckIn
-  # Web controller for OnlineCheckIn API
+  # Web controller for OnlineCheckIn
   class Api < Roda
     route('accounts') do |routing| # rubocop:disable Metrics/BlockLength
       @account_route = "#{@api_root}/accounts"
@@ -13,7 +13,7 @@ module OnlineCheckIn
 
         # GET api/v1/accounts/[username]
         routing.get do
-           auth = AuthorizeAccount.call(
+          auth = AuthorizeAccount.call(
             auth: @auth, username: username,
             auth_scope: AuthScope.new(AuthScope::READ_ONLY)
           )

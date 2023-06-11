@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module OnlineCheckIn
-  # Policy to determine if an account can view a particular project
+  # Policy to determine if an account can view a particular household
   class HouseholdPolicy
     def initialize(account, household, auth_scope = nil)
       @account = account
@@ -39,7 +39,7 @@ module OnlineCheckIn
     end
 
     def can_remove_collaborators?
-      can_write? && account_is_owner?
+      account_is_owner?
     end
 
     def can_collaborate?
@@ -63,11 +63,11 @@ module OnlineCheckIn
     private
 
     def can_read?
-      @auth_scope ? @auth_scope.can_read?('households') : false
+      @auth_scope ? @auth_scope.can_read?('household') : false
     end
 
     def can_write?
-      @auth_scope ? @auth_scope.can_write?('households') : false
+      @auth_scope ? @auth_scope.can_write?('household') : false
     end
 
     def account_is_owner?

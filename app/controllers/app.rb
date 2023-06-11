@@ -2,16 +2,16 @@
 
 require 'roda'
 require 'json'
-require_relative './helpers.rb'
+require_relative './helpers'
 
 module OnlineCheckIn
-  # Web controller for Credence API
+  # Web controller for OnlineCheckIn API
   class Api < Roda
     plugin :halt
     plugin :all_verbs
     plugin :multi_route
     plugin :request_headers
-
+    # Plugin to process HTTP headers faster with Mixin helpers
     include SecureRequestHelpers
 
     UNAUTH_MSG = { message: 'Unauthorized Request' }.to_json
@@ -22,6 +22,7 @@ module OnlineCheckIn
       secure_request?(routing) ||
         routing.halt(403, { message: 'TLS/SSL Required' }.to_json)
 
+      # Account information is extracted from auth_token before request
       begin
         @auth = authorization(routing.headers)
         @auth_account = @auth[:account] if @auth

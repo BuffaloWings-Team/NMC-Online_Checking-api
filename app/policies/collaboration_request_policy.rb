@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module OnlineCheckIn
-  # Policy to determine if an account can view a particular project
+  # Policy to determine if an account can view a particular household
   class CollaborationRequestPolicy
     def initialize(household, requestor_account, target_account, auth_scope = nil)
       @household = household
