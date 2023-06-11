@@ -10,9 +10,11 @@ module OnlineCheckIn
       end
     end
 
-    def self.call(account:, household:, collab_email:)
+    def self.call(auth:, household:, collab_email:)
       invitee = Account.first(email: collab_email)
-      policy = CollaborationRequestPolicy.new(household, account, invitee)
+      policy = CollaborationRequestPolicy.new(
+        household, auth[:account], invitee, auth[:scope]
+      )
       raise ForbiddenError unless policy.can_invite?
 
       household.add_collaborator(invitee)

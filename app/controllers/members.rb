@@ -16,7 +16,7 @@ module OnlineCheckIn
 
         routing.get do
           member = GetMemberQuery.call(
-            requestor: @auth_account, member: @req_member
+            auth: @auth, member: @req_member
           )
 
           { data: member }.to_json
@@ -25,7 +25,7 @@ module OnlineCheckIn
         rescue GetMemberQuery::NotFoundError => e
           routing.halt 404, { message: e.message }.to_json
         rescue StandardError => e
-          puts "GET MEMBER ERROR: #{e.inspect}"
+          Api.logger.warn "Member Error: #{e.inspect}"
           routing.halt 500, { message: 'API server error' }.to_json
         end
       end

@@ -17,11 +17,11 @@ module OnlineCheckIn
       end
     end
 
-    # Member for given requestor account
-    def self.call(requestor:, member:)
+    # Member for given authenticated account
+    def self.call(auth:, member:)
       raise NotFoundError unless member
 
-      policy = MemberPolicy.new(requestor, member)
+      policy = MemberPolicy.new(auth[:account], member, auth[:scope])
       raise ForbiddenError unless policy.can_view?
 
       member

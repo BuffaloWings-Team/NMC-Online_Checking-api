@@ -17,10 +17,10 @@ module OnlineCheckIn
       end
     end
 
-    def self.call(account:, household:)
+    def self.call(auth:, household:)
       raise NotFoundError unless household
 
-      policy = HouseholdPolicy.new(account, household)
+      policy = HouseholdPolicy.new(auth[:account], household, auth[:scope])
       raise ForbiddenError unless policy.can_view?
 
       household.full_details.merge(policies: policy.summary)
