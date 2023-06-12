@@ -11,3 +11,4 @@ spec
 style
 newkey:db
 newkey:msg
+newkey:signing
