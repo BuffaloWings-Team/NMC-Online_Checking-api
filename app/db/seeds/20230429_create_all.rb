@@ -56,7 +56,7 @@ end
 def add_collaborators
   contrib_info = CONTRIB_INFO
   contrib_info.each do |contrib|
-    household = OnlineCheckIn::Household.first(name: contrib['househ_name'])
+    household = OnlineCheckIn::Household.first(houseowner: contrib['household_owner'])
 
     auth_token = AuthToken.create(household.owner)
     auth = scoped_auth(auth_token)

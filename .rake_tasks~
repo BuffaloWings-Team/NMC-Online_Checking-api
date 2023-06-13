@@ -6,6 +6,7 @@ db:drop
 db:dropAll
 db:migrate
 db:seed
+db:reset_seeds
 release?
 spec
 style
