@@ -4,8 +4,6 @@ require 'sequel'
 require 'json'
 require_relative './password'
 
-# rubocop:disable Style/HashSyntax
-
 module OnlineCheckIn
   # Models a registered account
   class Account < Sequel::Model
@@ -48,12 +46,11 @@ module OnlineCheckIn
         {
           type: 'account',
           attributes: {
-            username: username,
-            email: email
+            username:,
+            email:
           }
         }, options
       )
     end
   end
 end
-# rubocop:enable Style/HashSyntax
