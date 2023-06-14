@@ -12,7 +12,11 @@ module OnlineCheckIn
       end
   
       def email
-        @gh_account['email']
+        if @gh_account['email'].nil?
+          email = 'null' + '@github.com' # to prevent not getting email error
+        else
+          @gh_account['email']
+        end
       end
     end
   end
