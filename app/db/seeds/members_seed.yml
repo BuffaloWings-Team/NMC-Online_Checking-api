@@ -1,8 +1,8 @@
 ---
-  - first_name: jake
-    last_name: joe
+  - firstname: jake
+    lastname: joe
     dob: 1988-0320
 
-  - first_name: testname
-    last_name: lasttest
+  - firstname: testname
+    lastname: lasttest
     dob: 1982-0402

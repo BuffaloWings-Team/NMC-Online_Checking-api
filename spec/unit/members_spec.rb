@@ -17,8 +17,8 @@ describe 'Test Member Handling' do
     new_member = house.add_member(member_data)
 
     member = OnlineCheckIn::Member.find(id: new_member.id)
-    _(member.first_name).must_equal member_data['first_name']
-    _(member.last_name).must_equal member_data['last_name']
+    _(member.firstname).must_equal member_data['firstname']
+    _(member.lastname).must_equal member_data['lastname']
     _(member.dob).must_equal member_data['dob']
   end
 

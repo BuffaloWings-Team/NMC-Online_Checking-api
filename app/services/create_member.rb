@@ -20,6 +20,7 @@ module OnlineCheckIn
     def self.call(auth:, household:, member_data:)
       policy = HouseholdPolicy.new(auth[:account], household, auth[:scope])
       raise ForbiddenError unless policy.can_add_members?
+      print("member_data: #{member_data}\n")
       household.add_member(member_data)
 
     rescue Sequel::MassAssignmentRestriction

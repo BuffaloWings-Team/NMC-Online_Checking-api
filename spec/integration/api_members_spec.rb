@@ -31,8 +31,8 @@ describe 'Test Member Handling' do
 
       result = JSON.parse(last_response.body)['data']
       _(result['attributes']['id']).must_equal member.id
-      _(result['attributes']['first_name']).must_equal member_data['first_name']
-      _(result['attributes']['last_name']).must_equal member_data['last_name']
+      _(result['attributes']['firstname']).must_equal member_data['firstname']
+      _(result['attributes']['lastname']).must_equal member_data['lastname']
     end
 
     it 'SAD AUTHORIZATION: should not get details without authorization' do
@@ -86,8 +86,8 @@ describe 'Test Member Handling' do
       member = OnlineCheckIn::Member.first
 
       _(created['id']).must_equal member.id
-      _(created['first_name']).must_equal @member_data['first_name']
-      _(created['last_name']).must_equal @member_data['last_name']
+      _(created['firstname']).must_equal @member_data['firstname']
+      _(created['lastname']).must_equal @member_data['lastname']
       _(created['dob']).must_equal @member_data['dob']
     end
 

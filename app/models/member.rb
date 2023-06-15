@@ -14,7 +14,7 @@ module OnlineCheckIn
     plugin :timestamps, update_on_create: true
 
     plugin :whitelist_security
-    set_allowed_columns :first_name, :last_name, :dob
+    set_allowed_columns :firstname, :lastname, :dob
 
     # Secure getters and setters
     def dob
@@ -31,13 +31,13 @@ module OnlineCheckIn
         {
           type: 'member',
           attributes: {
-            id: id,
-            first_name: first_name,
-            last_name: last_name,
-            dob: dob
+            id: ,
+            firstname:,
+            lastname:,
+            dob: 
           },
           include: {
-            household: household
+            household:
           }
         }, options
       )

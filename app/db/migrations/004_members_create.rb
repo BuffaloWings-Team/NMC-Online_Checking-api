@@ -8,14 +8,14 @@ Sequel.migration do
       uuid :id, primary_key: true
       foreign_key :household_id, table: :households
 
-      String :first_name, null: false
-      String :last_name, null: false
-      String :dob_secure, null: false
+      String :firstname, null: false
+      String :lastname, null: false
+      String :dob, null: false
 
       DateTime :created_at
       DateTime :updated_at
 
-      unique [:household_id, :first_name, :last_name]
+      unique [:household_id]
     end
   end
 end
