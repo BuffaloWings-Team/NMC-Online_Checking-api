@@ -21,7 +21,7 @@ module OnlineCheckIn
 
     plugin :timestamps
     plugin :whitelist_security
-    set_allowed_columns :houseowner, :floorNo, :ping, :email, :phonenumber
+    set_allowed_columns :houseowner, :floorNo, :roomNo, :ping, :email, :phonenumber
 
     def to_h
       {
@@ -30,6 +30,7 @@ module OnlineCheckIn
           id:,
           houseowner:,
           floorNo:,
+          roomNo:,
           ping:,
           email:,
           phonenumber:

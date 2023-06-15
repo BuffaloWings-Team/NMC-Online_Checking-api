@@ -9,7 +9,8 @@ Sequel.migration do
       foreign_key :owner_id, :accounts
 
       String :houseowner, unique: true, null: false
-      String :floorNo, null: false
+      Integer :floorNo, null: false
+      Integer :roomNo, null: false
       Integer :ping, null: false
       String :email, null: false, unique: true
       String :phonenumber, null: false, unique: true

@@ -103,6 +103,8 @@ describe 'Test Household Handling' do
 
       _(created['id']).must_equal househ.id
       _(created['houseowner']).must_equal @househ_data['houseowner']
+      _(created['floorNo']).must_equal @househ_data['floorNo']
+      _(created['roomNo']).must_equal @househ_data['roomNo']
       _(created['ping']).must_equal @househ_data['ping']
       _(created['email']).must_equal @househ_data['email']
       _(created['phonenumber']).must_equal @househ_data['phonenumber']
