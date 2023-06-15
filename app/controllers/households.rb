@@ -100,7 +100,6 @@ module OnlineCheckIn
         # POST api/v1/households
         routing.post do
           new_data = JSON.parse(routing.body.read)
-          print("starting to create household with #{new_data}\n")
           new_househ = CreateHouseholdForOwner.call(
             auth: @auth, household_data: new_data
           )
