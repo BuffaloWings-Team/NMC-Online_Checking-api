@@ -17,8 +17,9 @@ module OnlineCheckIn
       routing.on 'register' do
         # POST api/v1/auth/register
         routing.post do
+          print("creating an register account1")
           VerifyRegistration.new(@request_data).call
-
+          print("creating an register account2")
           response.status = 202
           { message: 'Verification email sent' }.to_json
         rescue VerifyRegistration::InvalidRegistration => e
