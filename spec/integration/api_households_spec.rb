@@ -52,6 +52,7 @@ describe 'Test Household Handling' do
       result = JSON.parse(last_response.body)['data']
       _(result['attributes']['id']).must_equal househ.id
       _(result['attributes']['houseowner']).must_equal househ.houseowner
+      _(result['attributes']['email']).must_equal househ.email
     end
 
     it 'SAD: should return error if unknown household requested' do
@@ -102,6 +103,9 @@ describe 'Test Household Handling' do
 
       _(created['id']).must_equal househ.id
       _(created['houseowner']).must_equal @househ_data['houseowner']
+      _(created['ping']).must_equal @househ_data['ping']
+      _(created['email']).must_equal @househ_data['email']
+      _(created['phonenumber']).must_equal @househ_data['phonenumber']
     end
 
     it 'SAD: should not create new household without authorization' do

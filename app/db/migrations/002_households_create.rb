@@ -10,7 +10,9 @@ Sequel.migration do
 
       String :houseowner, unique: true, null: false
       String :floorNo, null: false
-      String :contact, null: false, unique: true
+      Integer :ping, null: false
+      String :email, null: false, unique: true
+      String :phonenumber, null: false, unique: true
 
       DateTime :created_at
       DateTime :updated_at

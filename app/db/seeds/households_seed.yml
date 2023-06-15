@@ -1,8 +1,12 @@
 ---
   - houseowner: Test Household
     floorNo: floor 2
-    contact: 0912-565-123
+    ping: 30
+    email: jpoop@nthu.edu.tw
+    phonenumber: 0912-565-123
     
   - houseowner: Another Household
     floorNo: floor 3
-    contact: 0953-123-636
+    ping: 20
+    email: 11100023@nthu.edu.tw
+    phonenumber: 0953-123-636
