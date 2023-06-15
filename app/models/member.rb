@@ -25,14 +25,6 @@ module OnlineCheckIn
       self.dob_secure = SecureDB.encrypt(plaintext)
     end
 
-    def content
-      SecureDB.decrypt(content_secure)
-    end
-
-    def content=(plaintext)
-      self.content_secure = SecureDB.encrypt(plaintext)
-    end
-
     # rubocop:disable Metrics/MethodLength
     def to_json(options = {})
       JSON(
