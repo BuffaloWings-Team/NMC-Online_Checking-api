@@ -22,16 +22,16 @@ module OnlineCheckIn
       can_write? && account_is_owner?
     end
 
-    def can_leave?
-      account_is_collaborator?
-    end
+#    def can_leave?
+#      account_is_collaborator?
+#    end
 
     def can_add_members?
-      can_write? && (account_is_owner? || account_is_collaborator?)
+      can_write? && (account_is_owner?)
     end
 
     def can_remove_members?
-      can_write? && (account_is_owner? || account_is_collaborator?)
+      can_write? && (account_is_owner?)
     end
 
     def can_add_collaborators?
