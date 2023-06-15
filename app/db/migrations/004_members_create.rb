@@ -10,12 +10,12 @@ Sequel.migration do
 
       String :firstname, null: false
       String :lastname, null: false
-      String :dob, null: false
+      String :dob_secure, null: false
 
       DateTime :created_at
       DateTime :updated_at
 
-      unique [:household_id]
+      unique [:household_id, :firstname, :lastname]
     end
   end
 end

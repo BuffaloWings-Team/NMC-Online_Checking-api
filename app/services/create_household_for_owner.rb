@@ -12,7 +12,7 @@ module OnlineCheckIn
 
     def self.call(auth:, household_data:)
       raise ForbiddenError unless auth[:scope].can_write?('households')
-      househ = auth[:account].add_owned_household(household_data)
+      auth[:account].add_owned_household(household_data)
     end
   end
 end

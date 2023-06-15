@@ -31,13 +31,13 @@ module OnlineCheckIn
         {
           type: 'member',
           attributes: {
-            id: ,
-            firstname:,
-            lastname:,
-            dob: 
+            id: id,
+            firstname: firstname,
+            lastname: lastname,
+            dob: dob 
           },
           include: {
-            household:
+            household: household
           }
         }, options
       )
