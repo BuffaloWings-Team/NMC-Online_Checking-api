@@ -13,13 +13,13 @@ module OnlineCheckIn
       end
 
       def viewable
-        # if @current_account == @target_account
-        @full_scope
-        # else
-        #   @full_scope.select do |house|
-        #     includes_collaborator?(house, @current_account)
-        #   end
-        # end
+         if @current_account == @target_account
+          @full_scope
+         else
+           @full_scope.select do |house|
+             includes_collaborator?(house, @current_account)
+          end
+         end
       end
 
       private

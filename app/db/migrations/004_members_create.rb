@@ -15,7 +15,7 @@ Sequel.migration do
       DateTime :created_at
       DateTime :updated_at
 
-      unique [:household_id]
+      unique [:household_id, :firstname, :lastname]
     end
   end
 end
