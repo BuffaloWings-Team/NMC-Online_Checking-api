@@ -11,7 +11,7 @@ Sequel.migration do
       String :houseowner, unique: true, null: false
       Integer :floorNo, null: false
       Integer :roomNo, null: false
-      Integer :ping, null: false
+      Float :ping, null: false
       String :email, null: false, unique: true
       String :phonenumber, null: false, unique: true
 
