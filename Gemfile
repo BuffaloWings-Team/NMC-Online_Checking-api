@@ -3,6 +3,9 @@
 source 'https://rubygems.org'
 ruby File.read('.ruby-version').strip
 
+# Test Coverage
+gem 'simplecov'
+
 # Web API
 gem 'json'
 gem 'puma', '~>6.2'
