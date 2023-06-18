@@ -23,20 +23,15 @@ module OnlineCheckIn
 
     def call
       raise(InvalidRegistration, 'Username exists') unless username_available?
-      print("finish username finding\n")
       raise(InvalidRegistration, 'Email already used') unless email_available?
-      print("finish email finding\n")
-      print("calling verify registration")
       send_email_verification
     end
 
     def username_available?
-      print("\nusername" + @registration[:username])
       Account.first(username: @registration[:username]).nil?
     end
 
     def email_available?
-      print("\nemail" + @registration[:email])  
       Account.first(email: @registration[:email]).nil?
     end
 
@@ -64,11 +59,8 @@ module OnlineCheckIn
     end
 
     def send_email_verification
-      print("sending email\n")
       res = HTTP.auth("Bearer #{mail_api_key}")
                 .post(mail_url, json: mail_json)
-      print("finish sending email\n")
-      print(res.status)
       raise EmailProviderError if res.status >= 300
     rescue StandardError
       raise(InvalidRegistration,
