@@ -10,7 +10,7 @@ Sequel.migration do
 
       String :firstname, null: false
       String :lastname, null: false
-      String :dob_secure, null: false
+      String :dob, null: false
 
       DateTime :created_at
       DateTime :updated_at
