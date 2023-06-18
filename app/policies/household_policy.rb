@@ -53,7 +53,7 @@ module OnlineCheckIn
         can_delete: can_delete?,
         can_leave: can_leave?,
         can_add_members: can_add_members?,
-        can_delete_members: can_remove_members?,
+        can_remove_members: can_remove_members?,
         can_add_collaborators: can_add_collaborators?,
         can_remove_collaborators: can_remove_collaborators?,
         can_collaborate: can_collaborate?

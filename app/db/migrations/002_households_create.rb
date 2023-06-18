@@ -8,12 +8,12 @@ Sequel.migration do
       primary_key :id
       foreign_key :owner_id, :accounts
 
-      String :houseowner, unique: true, null: false
+      String :houseowner, null: false
       Integer :floorNo, null: false
       Integer :roomNo, null: false
       Float :ping, null: false
-      String :email, null: false, unique: true
-      String :phonenumber, null: false, unique: true
+      String :email, null: false
+      String :phonenumber, null: false
 
       DateTime :created_at
       DateTime :updated_at
