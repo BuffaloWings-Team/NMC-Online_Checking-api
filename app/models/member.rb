@@ -17,13 +17,13 @@ module OnlineCheckIn
     set_allowed_columns :firstname, :lastname, :dob
 
     # # Secure getters and setters
-    # def dob
-    #   SecureDB.decrypt(dob_secure)
-    # end
+    def dob
+      SecureDB.decrypt(dob_secure)
+    end
 
-    # def dob=(plaintext)
-    #   self.dob_secure = SecureDB.encrypt(plaintext)
-    # end
+    def dob=(plaintext)
+      self.dob_secure = SecureDB.encrypt(plaintext)
+    end
 
     # rubocop:disable Metrics/MethodLength
     def to_json(options = {})
