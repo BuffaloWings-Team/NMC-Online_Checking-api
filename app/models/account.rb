@@ -24,8 +24,6 @@ module OnlineCheckIn
     plugin :timestamps, update_on_create: true
 
     def self.create_github_account(github_account)
-      print("start creating github account\n")
-      print(github_account[:username]," and ", github_account[:email])
       create(username: github_account[:username],
              email: github_account[:email])             
     end
